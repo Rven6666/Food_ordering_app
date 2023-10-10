@@ -6,7 +6,7 @@ public abstract class UsersParent{
     protected int phoneNum;
     protected String email;
     protected String username;
-    protected String password;
+    protected String encryptedPassword;
     protected Boolean viewEditAccess;
     protected ScrollManager scrollManager;
     private UserManager userManager;
@@ -45,12 +45,12 @@ public abstract class UsersParent{
         return this.email;
     }
 
-    protected void setPassword(String password){
-        this.password = this.encriptPassword(password);
+    protected void setPassword(String rawPassword){
+        this.encryptedPassword = this.encriptPassword.hashedPassword(rawPassword);
     }
 
     protected String getPassword(){
-       return this.password;
+       return this.encryptedPassword;
     }
 
 }
