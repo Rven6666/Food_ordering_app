@@ -27,6 +27,11 @@ dependencies {
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    //to use Json 
+    implementation files('libs/json-20230618-javadoc.jar')
+    implementation 'org.apache.commons:commons-text'
+    // to work for the JSON object
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
