@@ -9,23 +9,19 @@ public class App {
 
     public App () {
         this.userManager = new UserManager();
+        run();
     }
 
     public static void main(String[] args) {
-
-        // creating App
+        // running the App
         App app = new App();
+    }
 
+    public void run() {
         // displaying login screen
-//        userManager.loginSystem();
-//        Login login = new Login();
-//        login.displayLoginScreen();
-//        this.user = login.getUser();
-//
-//        // displaying main menu
-//        MainMenu mainMenu = new MainMenu();
-//        mainMenu.displayMainMenu();
-//        this.user = mainMenu.getUser();
+        Login login = new Login();
+        login.displayLoginScreen();
+        userManager = login.getUserManager();
 
     }
 }

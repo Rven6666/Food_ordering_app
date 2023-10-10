@@ -117,6 +117,14 @@ public class UserManager{
     public void updateUser(){
         
     }
+
+    public HashMap<Integer, Object> getUsers() {
+        
+    }
+
+    public int getUserCount(){
+        return this.userList.size();
+    }
  
     public void loginSystem() {
         // String username = scan.nextLine();
