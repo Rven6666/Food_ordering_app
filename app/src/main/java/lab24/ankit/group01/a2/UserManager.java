@@ -32,6 +32,10 @@ public class UserManager{
         
     }
 
+    public HashMap<Integer, Object> getUsers() {
+        
+    }
+
     public int getUserCount(){
         return this.userList.size();
     }

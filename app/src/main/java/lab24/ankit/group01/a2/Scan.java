@@ -1,6 +1,7 @@
 package lab24.ankit.group01.a2;
 
 import java.util.Scanner;
+import java.util.List;
 
 public class Scan {
 
@@ -24,16 +25,17 @@ public class Scan {
         return response;
     }
 
-    public static String scanString() {
+    public static String scanString(List<String> options) {
         Scanner scan = new Scanner(System.in);
         String response = "";
         while (true) {
             response = scan.nextLine().strip();
-            if (response.length() > 0)
+            if (options == null || options.contains(response))
                 break;
             else
                 System.out.print("Invalid input. Please enter another value: ");
         }
+        scan.close();
         return response;
     }
     
