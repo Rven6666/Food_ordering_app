@@ -1,10 +1,11 @@
 package lab24.ankit.group01.a2;
 
-import lab24.ankit.group01.a2.User_types.UsersParent;
+import lab24.ankit.group01.a2.User_types.Guest;
+import lab24.ankit.group01.a2.User_types.User;
 
 public class Login {
     
-    private UsersParent user;
+    private User user;
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");

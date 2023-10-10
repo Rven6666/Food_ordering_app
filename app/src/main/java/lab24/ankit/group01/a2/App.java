@@ -17,15 +17,15 @@ public class App {
         App app = new App();
 
         // displaying login screen
-        userManager.loginSystem();
-        Login login = new Login();
-        login.displayLoginScreen();
-        this.user = login.getUser();
-
-        // displaying main menu
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.displayMainMenu();
-        this.user = mainMenu.getUser();
+//        userManager.loginSystem();
+//        Login login = new Login();
+//        login.displayLoginScreen();
+//        this.user = login.getUser();
+//
+//        // displaying main menu
+//        MainMenu mainMenu = new MainMenu();
+//        mainMenu.displayMainMenu();
+//        this.user = mainMenu.getUser();
 
     }
 }
