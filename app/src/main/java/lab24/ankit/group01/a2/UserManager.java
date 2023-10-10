@@ -5,20 +5,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
 public class UserManager{
     // attributes for UserManager class
-    private final String filePath = "/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
-    private JSONParser parser;
-    private int id;
-
-    public UserManager(){
-        // init parser & id
-        parser = new JSONParser();
-        id = 1;
-    }
+    private final String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
+    private JSONParser parser = new JSONParser();
+    private HashMap<Integer, Object> userList;
 
     public void createUser(){
 
@@ -32,64 +31,57 @@ public class UserManager{
 
         // create name (probably would need to enforce check)
         System.out.print("Please enter your full name: ");
-        String full_name = Scan.scanString();
+        String full_name = Scan.scanString(null);
 
         // please enter your email (would also need to enforce check)
         System.out.print("Please enter your email: ");
-        String email = Scan.scanString();
+        String email = Scan.scanString(null);
 
         // please enter your phone number (also need to enforce a check)
         System.out.print("Please enter your phone number: ");
-        String phone_number = Scan.scanString();
+        String phone_number = Scan.scanString(null);
 
         System.out.print("Please enter a username: ");
-        String username = Scan.scanString();
+        String username = Scan.scanString(null);
 
         // hash password with hasing algorithm
         System.out.print("Please enter a password: ");
-        String password = PassEncrypt.hashPassword(Scan.scanString());
+        String password = PassEncrypt.hashPassword(Scan.scanString(null));
 
         // choose user privilege/type
         System.out.print("Please choose privilege (Admin/Member/Guest): ");
-        String privilege = Scan.scanString().toLowerCase();
-        while(!privilege.equals("admin") && !privilege.equals("member") && !privilege.equals("guest")){
-            // keep prompting user until they give right input
-            privilege = Scan.scanString().toLowerCase();
-        }
+        String privilege = Scan.scanString(new ArrayList<String>(Arrays.asList("Admin", "Member", "Guest"))).toLowerCase();
 
         // create new user json object
         JSONObject user = new JSONObject();
-        JSONObject user_content = new JSONObject();
-        JSONObject profile = new JSONObject();
-        profile.put("full_name", full_name);
-        profile.put("email", email);
-        profile.put("phone_number", phone_number);
-        user_content.put("profile", profile);
-        user_content.put("type", privilege);
-        user_content.put("password", password);
-        user_content.put("username", username);
-        // increment id by 1
-        id++;
-
-        if (file.length() != 0){
-            // set user as the existing json content
-            try {
-                Object obj = parser.parse(new FileReader(filePath));
-                user = (JSONObject) obj;
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+        user.put("id", getNextID());
+        user.put("full_name", full_name);
+        user.put("email", email);
+        user.put("phone_number", phone_number);
+        user.put("type", privilege);
+        user.put("password", password);
+        user.put("username", username);
+        
+        JSONObject obj = null;
 
         try {
-            user.put(id, user_content);
-            // write to the UserList
+            // getting current jsonobject in file
+            obj = (JSONObject) parser.parse(new FileReader(filePath));
+            ((JSONArray)obj.get("users")).add(user);
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // write to the UserList
+        try {
             FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(user.toJSONString());
+            fileWriter.write(obj.toJSONString());
             fileWriter.close();
         } catch (IOException e){
             // print the stacktrace
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -98,20 +90,38 @@ public class UserManager{
         // Read JSON data from a file
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
-
-            for(Object key : jsonObject.keySet()){
-                JSONObject user = (JSONObject) jsonObject.get(key);
-                System.out.println("Full Name: " + user.get("profile.full_name"));
-                System.out.println("Email: " + user.get("profile.email"));
+            JSONArray users = (JSONArray) jsonObject.get("users");
+            for(Object obj : users){
+                JSONObject user = (JSONObject) obj;
+                System.out.println("Full Name: " + user.get("full_name"));
+                System.out.println("Email: " + user.get("email"));
             }
 
         } catch (Exception e){
             e.printStackTrace();
         }
 
+    }
 
+    public String getNextID() {
+        JSONObject obj = null;
 
+        try {
+            // getting current jsonobject in file
+            obj = (JSONObject) parser.parse(new FileReader(filePath));
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
 
+        int max = 0;
+        for (Object user : (JSONArray) obj.get("users")){
+            JSONObject userObject = (JSONObject) user;
+            int id = Integer.parseInt(userObject.get("id").toString());
+            if (id > max)
+                max = id;
+        }
+        return Integer.toString(max + 1);
     }
 
     public void updateUser(){
@@ -119,31 +129,11 @@ public class UserManager{
     }
 
     public HashMap<Integer, Object> getUsers() {
-        
+        return null;
     }
 
     public int getUserCount(){
         return this.userList.size();
-    }
- 
-    public void loginSystem() {
-        // String username = scan.nextLine();
-        // String password = scan.nextLine();
-        // scan.close();
-        // JSONParser parser = new JSONParser();
-        // try {
-        //     Object file = parser.parse(new FileReader(userList));
-        //     JSONObject fileob = (JSONObject) file;
-        // } catch (Exception e) {
-        //     System.out.println("File not found login");
-        //     System.exit(0);
-        // }
-    }
-
-    public static void main(String[] args) {
-        UserManager test = new UserManager();
-//        test.createUser();
-        test.removeUser();
     }
 
 }

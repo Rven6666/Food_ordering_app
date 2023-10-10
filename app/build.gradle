@@ -47,7 +47,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'lab24.ankit.group01.a2.UserManager'
+    mainClass = 'lab24.ankit.group01.a2.App'
 }
 
 test {
@@ -56,4 +56,8 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+}
+
+run {
+    standardInput = System.in
 }

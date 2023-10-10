@@ -3,25 +3,26 @@
  */
 package lab24.ankit.group01.a2;
 
+import lab24.ankit.group01.a2.User_types.User;
+
 public class App {
 
-    private UserManager userManager;
+    public User user;
 
     public App () {
-        this.userManager = new UserManager();
         run();
     }
 
     public static void main(String[] args) {
         // running the App
-        App app = new App();
+        new App();
     }
 
     public void run() {
         // displaying login screen
         Login login = new Login();
         login.displayLoginScreen();
-        userManager = login.getUserManager();
+        user = login.getUser();
 
     }
 }

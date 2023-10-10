@@ -9,8 +9,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import lab24.ankit.group01.a2.User_types.Guest;
-import lab24.ankit.group01.a2.User_types.UsersParent;
+import lab24.ankit.group01.a2.User_types.User;
+import lab24.ankit.group01.a2.User_types.Admin;
+import lab24.ankit.group01.a2.User_types.Member;
 
 public class Login {
     
@@ -18,30 +19,26 @@ public class Login {
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");
-        System.out.println("1. Member Login\n2. Admin Login\n3. Continue as Guest\n4. Exit");
+        System.out.println("1. Login\n2. Continue as Guest\n3. Exit");
         System.out.println("Please select an option");
         int choice = Scan.scanInteger(1, 4);
         switch (choice) {
             case 1:
-                attemptUserLogin("member");
+                if (!attemptUserLogin())
+                    displayLoginScreen();
                 break;
             case 2:
-                attemptUserLogin("admin");
+                this.user = null;
                 break;
             case 3:
-                user = new Guest();
-                break;
-            case 4:
+                System.out.println("Thanks for stopping by!");
                 System.exit(0);
-                break;
         }
     }
     
-    public void attemptUserLogin(String type) {
+    public boolean attemptUserLogin() {
 
-        boolean attemptLogin = true;
-
-        while (attemptLogin) {
+        while (true) {
 
             // getting username and password
             System.out.print("Enter your username: ");
@@ -50,24 +47,21 @@ public class Login {
             String password = Scan.scanString(null);
 
             // checking if login credentials are valid
-            if (checkUserLogin(username, password, type)) {
+            if (checkUserLogin(username, password)) {
                 System.out.println("Login successful");
-                break;
+                return true;
             } else {
                 // seeing if they would like to attempt to try login again
                 System.out.println("Invalid username or password");
                 System.out.println("Would you like to try again? (y/n)");
                 String choice = Scan.scanString(new ArrayList<String>(Arrays.asList("y", "n")));
                 if (choice.equals("n"))
-                    attemptLogin = false;
-                else
-                    break;
+                    return false;
             }
         }
-        
     }
 
-    public boolean checkUserLogin(String username, String password, String type) {
+    public boolean checkUserLogin(String username, String password) {
         JSONParser parser = new JSONParser();
         JSONObject userFile = null;
 
@@ -78,11 +72,16 @@ public class Login {
             System.exit(1);
         }
 
-        JSONArray users = (JSONArray) userFile.get(type);
+        JSONArray users = (JSONArray) userFile.get("users");
 
         for (Object user : users) {
             JSONObject userObject = (JSONObject) user;
-            if (userObject.get("username").equals(username) && userObject.get("password").equals(password)) {
+            if (userObject.get("username").equals(username) && 
+            PassEncrypt.checkPassword(password, userObject.get("password").toString())) {
+                if (userObject.get("type").equals("member"))
+                    this.user = new Member(userObject);
+                else
+                    this.user = new Admin(userObject);
                 return true;
             }
         }
@@ -91,7 +90,7 @@ public class Login {
 
     }
 
-    public UsersParent getUser() {
+    public User getUser() {
         return user;
     }
 
