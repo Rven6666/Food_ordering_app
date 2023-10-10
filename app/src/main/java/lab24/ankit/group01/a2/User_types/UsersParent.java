@@ -1,4 +1,9 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.User_types;
+
+import lab24.ankit.group01.a2.PassEncrypt;
+import lab24.ankit.group01.a2.ScrollManager;
+import lab24.ankit.group01.a2.UserManager;
+
 public abstract class UsersParent{
 
     protected int id;
@@ -9,25 +14,21 @@ public abstract class UsersParent{
     protected String encryptedPassword;
     protected Boolean viewEditAccess;
     protected ScrollManager scrollManager;
-    private UserManager userManager;
-    private PassEncript encriptPassword;
+    protected UserManager userManager;
+    protected PassEncrypt encriptPassword;
 
     public UsersParent(){
-        this.userManager = new UserManager;
-        this.encriptPassword = new PassEncript;
+        this.userManager = new UserManager();
+        this.encriptPassword = new PassEncrypt();
     }
 
-    protected abstract void setID(){
-    }
+    protected abstract void setID();
 
-    protected abstract int getID(){
-    }
+    protected abstract int getID();
 
-    protected abstract void setName(){
-    }
+    protected abstract void setName();
 
-    protected abstract void setViewEditAccess(){
-    }
+    protected abstract void setViewEditAccess();
 
     protected void setPhoneNumber(int newPhoneNum){
         this.phoneNum = newPhoneNum;
@@ -46,7 +47,7 @@ public abstract class UsersParent{
     }
 
     protected void setPassword(String rawPassword){
-        this.encryptedPassword = this.encriptPassword.hashedPassword(rawPassword);
+        this.encryptedPassword = PassEncrypt.hashPassword(rawPassword);
     }
 
     protected String getPassword(){

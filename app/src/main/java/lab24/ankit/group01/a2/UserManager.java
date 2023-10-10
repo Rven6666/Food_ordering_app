@@ -16,7 +16,7 @@ public class UserManager{
     private Scanner scan;
 
     public UserManager(){
-        this.userList = "app/src/main/java/lab24/ankit/group01/a2/Databases/UserList.json"
+
         this.scan = new Scanner(System.in);
     }
 

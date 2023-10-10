@@ -1,24 +1,24 @@
-package lab24.ankit.group01.a2;
-public class Guest extends User{
+package lab24.ankit.group01.a2.User_types;
+public class Guest extends UsersParent{
 
-    @Overide
+    @Override
     public void setID(){
         //set with database number.
         //increment
     }
 
-    @Overide
+    @Override
     public int getID(){
         return this.id;
     } 
 
-    @Overide
+    @Override
     public void setName(){
-        this.name = "Guest"
+        this.name = "Guest";
     }
 
-    @Overide
+    @Override
     public void setViewEditAccess(){
-        this.viewEditAccess = False;
+        this.viewEditAccess = false;
     } 
 }

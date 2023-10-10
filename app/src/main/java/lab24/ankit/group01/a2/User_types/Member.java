@@ -1,23 +1,25 @@
-package lab24.ankit.group01.a2;
-public class Member extends User{
+package lab24.ankit.group01.a2.User_types;
+import lab24.ankit.group01.a2.User_types.UsersParent;
 
-    @Overide
+public class Member extends UsersParent {
+
+    @Override
     public void setID(){
-        this.id = this.userManager.getUserCount() ++1;
+        this.id = this.userManager.getUserCount() + 1;
     }
 
-    @Overide
+    @Override
     public int getID(){
         return this.id;
     } 
 
-    @Overide
+    @Override
     public void setName(){
-        this.name = "User"
+        this.name = "User";
     }
 
-    @Overide
+    @Override
     public void setViewEditAccess(){
-        this.viewEditAccess = True;
+        this.viewEditAccess = true;
     } 
 }

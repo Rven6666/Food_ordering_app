@@ -1,24 +1,24 @@
-package lab24.ankit.group01.a2;
-public class Admin extends User{
+package lab24.ankit.group01.a2.User_types;
+public class Admin extends UsersParent{
 
-    @Overide
+    @Override
     public void setID(){
-        this.id = this.userManager.getUserCount() ++1;
+        this.id = userManager.getUserCount() + 1;
     }
 
-    @Overide
+    @Override
     public int getID(){
         return this.id;
     } 
 
-    @Overide
+    @Override
     public void setName(){
-        this.name = "Admin"
+        this.name = "Admin";
     }
 
-    @Overide
+    @Override
     public void setViewEditAccess(){
-        this.viewEditAccess = True;
+        this.viewEditAccess = true;
     } 
 
 }
