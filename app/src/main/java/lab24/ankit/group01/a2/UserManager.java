@@ -5,9 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -15,7 +13,7 @@ import org.json.simple.parser.JSONParser;
 
 public class UserManager{
     // attributes for UserManager class
-    private final String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
+    private final String filePath = "lab24/ankit/group01/a2/Databases/UserList.json";
     private JSONParser parser = new JSONParser();
     private HashMap<Integer, Object> userList;
 
@@ -61,7 +59,7 @@ public class UserManager{
         user.put("type", privilege);
         user.put("password", password);
         user.put("username", username);
-        
+
         JSONObject obj = null;
 
         try {
@@ -85,20 +83,94 @@ public class UserManager{
         }
     }
 
+    /**
+     * remove a user from UserList
+     */
     public void removeUser(){
-        System.out.println("Displaying User Information...");
-        // Read JSON data from a file
-        try {
-            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
-            JSONArray users = (JSONArray) jsonObject.get("users");
-            for(Object obj : users){
-                JSONObject user = (JSONObject) obj;
-                System.out.println("Full Name: " + user.get("full_name"));
-                System.out.println("Email: " + user.get("email"));
-            }
+        System.out.println("Displaying User Information...\n");
+        displayUserList();
+        System.out.print("Please choose an ID to remove: ");
+        JSONObject removed_user = (JSONObject) getUserList().get(Scan.scanInteger(1, getUserList().size())-1);
 
-        } catch (Exception e){
+        try {
+            // getting current jsonobject in file
+            JSONObject obj = (JSONObject) parser.parse(new FileReader(filePath));
+            ((JSONArray)obj.get("users")).remove(removed_user);
+
+            // write to the UserList
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(obj.toJSONString());
+            fileWriter.close();
+
+            // output successful user removal message
+            System.out.println("\nUser removed successfully:");
+            displayUserInfo(removed_user);
+
+        }
+        catch (Exception e){
             e.printStackTrace();
+            System.exit(1);
+        }
+
+    }
+
+    /**
+     * update a user from UserList
+     */
+    public void updateUser(){
+        System.out.println("Displaying User Information...\n");
+        displayUserList();
+        System.out.print("Please choose an ID to modify: ");
+        int idx = Scan.scanInteger(1, getUserList().size())-1;
+        JSONObject user = (JSONObject) getUserList().get(idx);
+
+        // output successful retrieval message
+        System.out.println("\nRetrieved user information successfully:");
+        displayUserInfo(user);
+
+        // select field to modify
+        Set<String> setKeys = user.keySet();
+        String field = "";
+
+        // keep prompting user until he/she give valid option
+        while(!new ArrayList<>(setKeys).contains(field)){
+            System.out.println("\nSelect a field to modify...");
+            for(String key : setKeys){
+                // print the keys
+                System.out.println(key);
+            }
+            System.out.print("Field: ");
+            field = Scan.scanString(new ArrayList<>(setKeys));
+        }
+
+        // update the existing field with new value
+        System.out.printf("Please enter a new value for %s: ",field);
+        String updated_value = Scan.scanString(null);
+        if (field.equals("password")){
+            // encrypt new password
+            updated_value = PassEncrypt.hashPassword(updated_value);
+        }
+        user.put(field, updated_value);
+
+        // write to file
+        try {
+            // getting current jsonobject in file
+            JSONObject obj = (JSONObject) parser.parse(new FileReader(filePath));
+            ((JSONArray)obj.get("users")).set(idx, user);
+
+            // write to the UserList
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(obj.toJSONString());
+            fileWriter.close();
+
+            // output successful user edit message
+            System.out.println("\nUser information edited successfully:");
+            displayUserInfo(user);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
         }
 
     }
@@ -124,8 +196,51 @@ public class UserManager{
         return Integer.toString(max + 1);
     }
 
-    public void updateUser(){
-        
+    /**
+     * display users from UserList
+     */
+    public void displayUserList(){
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
+            JSONArray users = (JSONArray) jsonObject.get("users");
+            for(int i = 0; i < users.size(); i++){
+                JSONObject user = (JSONObject) users.get(i);
+                displayUserInfo(user);
+                System.out.println();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * display associated user info
+     * @param user, passed in as param
+     */
+    public void displayUserInfo(JSONObject user){
+        Set<String> setKeys = user.keySet();
+
+        for(String key : setKeys){
+            // display user info
+            System.out.printf("%s: %s\n", key, user.get(key));
+        }
+    }
+
+    /**
+     * get user list from the UserList database
+     * @return, a JSONArray containing user information
+     */
+    public JSONArray getUserList(){
+        JSONArray users = null;
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
+            users = (JSONArray) jsonObject.get("users");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public HashMap<Integer, Object> getUsers() {
