@@ -51,4 +51,16 @@ public abstract class User {
        return this.encryptedPassword;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public int getID(){
+        return this.id;
+    }
+
+    public void showUser(){
+        System.out.println("\nUser: "+this.name+"\nID: "+ this.id);
+    }
+
 }

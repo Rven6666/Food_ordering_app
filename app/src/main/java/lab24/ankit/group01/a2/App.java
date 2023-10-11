@@ -8,9 +8,13 @@ import lab24.ankit.group01.a2.User_types.User;
 public class App {
 
     public User user;
+    public Menu menu;
 
     public App () {
+        menu = new Menu();
         run();
+        menuDisplay("Intro");
+        menuDisplay("menu");
     }
 
     public static void main(String[] args) {
@@ -25,4 +29,45 @@ public class App {
         user = login.getUser();
 
     }
+
+    public void menuDisplay(String type){
+        // Menu intro
+        if(type.equals("Intro")){
+            if(user != null){
+                user.showUser();
+                menu.menuIntro(user.getName());
+                return;
+            }else{
+                System.out.println("\nUser: Guest");
+                menu.menuIntro("Guest");
+                return;
+            }
+        }else{
+            if(user != null){
+                menuSelection(menu.showMenu("User"));
+            }else{
+                menuSelection(menu.showMenu("Guest"));
+            }
+        }
+     }
+
+     public void menuSelection(int selection){
+        switch (selection){
+            case 1: //preview/view scrolls
+                System.out.println("CALL CLASS - To be done - Show/preview scrolls");
+                break;
+            case 2: // Add scrolls
+                 System.out.println("CALL CLASS - To be done - ADD scrolls");
+                 break;
+            case 3: //Edit Scrolls
+                System.out.println("CALL CLASS - To be done - EDIT scrolls");
+                break;
+            case 4: //recieve Scrolls (download)
+                System.out.println("CALL CLASS - To be done - DOWNLOAD scrolls");
+                break;
+            case 5://Search Scrolls
+                System.out.println("CALL CLASS - To be done - SEARCH scrolls");
+                break;
+        }
+     }
 }
