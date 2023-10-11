@@ -31,7 +31,7 @@ public class Menu{
                 }else{
                     return selection;
                 }
-            }else{
+            }else if(userType.equals("User")){
                 System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit");
                 int selection = inputCheck.scanInteger(1, 6);
                 if (selection == 6){
@@ -40,11 +40,49 @@ public class Menu{
                 }else{
                     return selection;
                 }
+            }else if (userType.equals("Admin")){
+                                System.out.println("1. View Scrolls\n2. Add Scrolls\n"
+                                +"3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. " 
+                                +"Create new Users\n7. View users\n8. Delete users\n9. View App stats\n10. Exit");
+                int selection = inputCheck.scanInteger(1, 10);
+                if (selection == 10){
+                    System.out.print("Good luck Admin of the Whiskers!");
+                    System.exit(0);
+                }else{
+                    return selection;
+                }
             }
-            
         }
-        
     }
+
+    public void menuSelection(int selection){
+        switch (selection){
+            case 1: //preview/view scrolls
+                System.out.println("CALL CLASS - To be done - Show/preview scrolls");
+                break;
+            case 2: // Add scrolls
+                 System.out.println("CALL CLASS - To be done - ADD scrolls");
+                 break;
+            case 3: //Edit Scrolls
+                System.out.println("CALL CLASS - To be done - EDIT scrolls");
+                break;
+            case 4: //recieve Scrolls (download)
+                System.out.println("CALL CLASS - To be done - DOWNLOAD scrolls");
+                break;
+            case 5://Search Scrolls
+                System.out.println("CALL CLASS - To be done - SEARCH scrolls");
+                break;
+            case 7:
+                System.out.println("CALL CLASS - To be done - VIEW Users");
+                break;
+            case 8:
+                System.out.println("CALL CLASS - To be done - DELETE users");
+                break;
+            case 9:
+                System.out.println("CALL CLASS - To be done - VIEW app stats");
+                break;
+        }
+     }
 
     
 }

@@ -9,12 +9,13 @@ public class App {
 
     public User user;
     public Menu menu;
+    public int selection;
 
     public App () {
         menu = new Menu();
         run();
-        menuDisplay("Intro");
-        menuDisplay("menu");
+        menuIntro();
+        menu.menuSelection(menuDisplay());
     }
 
     public static void main(String[] args) {
@@ -30,44 +31,30 @@ public class App {
 
     }
 
-    public void menuDisplay(String type){
+    public void menuIntro(){
         // Menu intro
-        if(type.equals("Intro")){
-            if(user != null){
-                user.showUser();
-                menu.menuIntro(user.getName());
-                return;
+        if(user != null){
+            user.showUser();
+            menu.menuIntro(user.getName());
+            return;
+        }else{
+            System.out.println("\nUser: Guest");
+            menu.menuIntro("Guest");
+            return;
+        }
+    }
+
+    public int menuDisplay(){
+        if(user != null){
+            if(user.isAdmin() == true){
+                return menu.showMenu("Admin");
             }else{
-                System.out.println("\nUser: Guest");
-                menu.menuIntro("Guest");
-                return;
+                return menu.showMenu("User");
             }
         }else{
-            if(user != null){
-                menuSelection(menu.showMenu("User"));
-            }else{
-                menuSelection(menu.showMenu("Guest"));
-            }
+            return menu.showMenu("Guest");
         }
      }
 
-     public void menuSelection(int selection){
-        switch (selection){
-            case 1: //preview/view scrolls
-                System.out.println("CALL CLASS - To be done - Show/preview scrolls");
-                break;
-            case 2: // Add scrolls
-                 System.out.println("CALL CLASS - To be done - ADD scrolls");
-                 break;
-            case 3: //Edit Scrolls
-                System.out.println("CALL CLASS - To be done - EDIT scrolls");
-                break;
-            case 4: //recieve Scrolls (download)
-                System.out.println("CALL CLASS - To be done - DOWNLOAD scrolls");
-                break;
-            case 5://Search Scrolls
-                System.out.println("CALL CLASS - To be done - SEARCH scrolls");
-                break;
-        }
-     }
+
 }
