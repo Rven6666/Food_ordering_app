@@ -29,6 +29,7 @@ public class Login {
                 break;
             case 2:
                 this.user = null;
+                System.out.println("Welcome, guest!");
                 break;
             case 3:
                 System.out.println("Thanks for stopping by!");

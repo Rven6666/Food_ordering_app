@@ -31,7 +31,7 @@ public class Menu{
                 }else{
                     return selection;
                 }
-            }else if(userType.equals("User")){
+            }else if(userType.equals("Member")){
                 System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit");
                 int selection = inputCheck.scanInteger(1, 6);
                 if (selection == 6){
