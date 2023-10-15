@@ -16,6 +16,7 @@ public abstract class User {
     protected String encryptedPassword;
     protected ScrollManager scrollManager;
     protected UserManager userManager;
+    protected String type;
 
     public User(JSONObject user){
         this.id = Integer.parseInt(user.get("id").toString());
@@ -24,6 +25,7 @@ public abstract class User {
         this.email = user.get("email").toString();
         this.username = user.get("username").toString();
         this.encryptedPassword = user.get("password").toString();
+        this.type = user.get("type").toString();
 
 
         this.userManager = new UserManager();
@@ -62,5 +64,10 @@ public abstract class User {
     public void showUser(){
         System.out.println("\nUser: "+this.name+"\nID: "+ this.id);
     }
+
+    public String getType(){
+       return this.type;
+    }
+
 
 }

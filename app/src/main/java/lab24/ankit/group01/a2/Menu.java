@@ -32,9 +32,10 @@ public class Menu{
                     return selection;
                 }
             }else if(userType.equals("Member")){
-                System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit");
-                int selection = inputCheck.scanInteger(1, 6);
-                if (selection == 6){
+                System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Change username\n"
+                                +"7. Change password\n8. Exit");
+                int selection = inputCheck.scanInteger(1, 8);
+                if (selection == 8){
                     System.out.print("Good luck member of the Whiskers!");
                     System.exit(0);
                 }else{
@@ -43,9 +44,10 @@ public class Menu{
             }else if (userType.equals("Admin")){
                                 System.out.println("1. View Scrolls\n2. Add Scrolls\n"
                                 +"3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. " 
-                                +"Create new Users\n7. View users\n8. Delete users\n9. View App stats\n10. Exit");
-                int selection = inputCheck.scanInteger(1, 10);
-                if (selection == 10){
+                                +"Create new Users\n7. View users\n8. Delete users\n9. View App stats\n 10. Change username\n"
+                                +"11. Change password\n12. Exit");
+                int selection = inputCheck.scanInteger(1, 12);
+                if (selection == 12){
                     System.out.print("Good luck Admin of the Whiskers!");
                     System.exit(0);
                 }else{
@@ -55,7 +57,15 @@ public class Menu{
         }
     }
 
-    public void menuSelection(int selection){
+    public void menuSelection(int selection, String name){
+        if(name.equals("member")){
+            if(selection == 6){
+                selection = 10;
+            }else if (selection == 7){
+                selection = 11;
+            }
+        }
+
         switch (selection){
             case 1: //preview/view scrolls
                 System.out.println("CALL CLASS - To be done - Show/preview scrolls");
@@ -80,6 +90,12 @@ public class Menu{
                 break;
             case 9:
                 System.out.println("CALL CLASS - To be done - VIEW app stats");
+                break;
+            case 10:
+                System.out.println("CALL CLASS - To be done - Change username");
+                break;
+            case 11:
+                System.out.println("CALL CLASS - To be done - Change password");
                 break;
         }
      }

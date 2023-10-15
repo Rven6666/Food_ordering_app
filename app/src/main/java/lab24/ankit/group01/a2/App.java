@@ -15,7 +15,7 @@ public class App {
         menu = new Menu();
         run();
         menuIntro();
-        menu.menuSelection(menuDisplay());
+        menu.menuSelection(menuDisplay(),user.getType());
     }
 
     public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class App {
             if(user.isAdmin() == true){
                 return menu.showMenu("Admin");
             }else{
-                return menu.showMenu("User");
+                return menu.showMenu("Member");
             }
         }else{
             return menu.showMenu("Guest");
