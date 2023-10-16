@@ -13,9 +13,14 @@ import lab24.ankit.group01.a2.User_types.User;
 import lab24.ankit.group01.a2.User_types.Admin;
 import lab24.ankit.group01.a2.User_types.Member;
 
-public class Login {
+public class Login implements LogObserverable {
     
     private User user;
+    private LogObserver logObserver;
+
+    public Login() {
+        this.logObserver = new SystemLog();
+    }
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");
@@ -30,6 +35,7 @@ public class Login {
             case 2:
                 this.user = null;
                 System.out.println("Welcome, guest!");
+                notifyObserver("Guest entered the system");
                 break;
             case 3:
                 System.out.println("Thanks for stopping by!");
@@ -50,6 +56,7 @@ public class Login {
             // checking if login credentials are valid
             if (checkUserLogin(username, password)) {
                 System.out.println("Login successful");
+                notifyObserver("User " + username + " logged in");
                 return true;
             } else {
                 // seeing if they would like to attempt to try login again
@@ -93,6 +100,11 @@ public class Login {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public void notifyObserver(String message) {
+        logObserver.updateLog("Login", message);
     }
 
 }

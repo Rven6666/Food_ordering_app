@@ -1,12 +1,14 @@
 package lab24.ankit.group01.a2;
-import lab24.ankit.group01.a2.Scan;
-
-import java.util.Scanner;
-import java.util.List;
 
 import lab24.ankit.group01.a2.User_types.User;
 
-public class Menu{
+public class Menu implements LogObserverable {
+
+    private LogObserver logObserver;
+
+    public Menu() {
+        this.logObserver = new SystemLog();
+    }
 
     public void menuIntro(User user){
         String name = "Guest";
@@ -104,5 +106,10 @@ public class Menu{
         }
      }
 
+
+     @Override
+     public void notifyObserver(String message) {
+         this.logObserver.updateLog("Menu", message);
+     }
     
 }
