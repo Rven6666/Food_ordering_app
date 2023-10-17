@@ -20,6 +20,8 @@ public class SystemLog implements LogObserver {
     public void updateLog(String from, String logEntry) {
         // getting the current date and time
         String dateTime = java.time.LocalDateTime.now().toString();
+        String[] parts = dateTime.split("T");
+        dateTime = parts[0] + " " + parts[1].substring(0, 8);
         
         // adding the date and time to the log entry
         logEntry = dateTime + " [" + from + "]: " + logEntry;
