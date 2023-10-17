@@ -7,6 +7,7 @@ import java.util.List;
 import lab24.ankit.group01.a2.User_types.User;
 
 public class Menu{
+    private FileUploader uploader = new FileUploader();
 
     public void menuIntro(User user){
         String name = "Guest";
@@ -75,8 +76,12 @@ public class Menu{
                 System.out.println("CALL CLASS - To be done - Show/preview scrolls");
                 break;
             case 2: // Add scrolls
-                 System.out.println("CALL CLASS - To be done - ADD scrolls");
-                 break;
+                if (user != null) {
+                    uploader.upload();
+                } else {
+                    System.out.println("You must be logged in to upload files.");
+                }
+                break;
             case 3: //Edit Scrolls
                 System.out.println("CALL CLASS - To be done - EDIT scrolls");
                 break;
