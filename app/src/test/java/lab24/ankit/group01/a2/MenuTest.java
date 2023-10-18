@@ -3,10 +3,6 @@ package lab24.ankit.group01.a2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import lab24.ankit.group01.a2.User_types.Admin;
-import lab24.ankit.group01.a2.User_types.Member;
-import lab24.ankit.group01.a2.User_types.User;
-import org.json.simple.JSONObject;
 import org.junit.Test;
 
 
@@ -15,20 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class MenuTest {
-
-    private User admin;
-    private User member;
-
-    public MenuTest() {
-        JSONObject userJSON = new JSONObject();
-        userJSON.put("id", 1);
-        userJSON.put("full_name", "John Doe");
-        userJSON.put("phone_number", "1234567890");
-        userJSON.put("email", "test@test.com.au");
-        userJSON.put("password", "password");
-        this.admin = new Admin(userJSON);
-        this.member = new Member(userJSON);
-    }
 
     @Test
     public void test1() {

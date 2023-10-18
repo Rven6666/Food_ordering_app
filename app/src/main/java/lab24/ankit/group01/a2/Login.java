@@ -10,9 +10,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 
-public class Login {
+public class Login implements LogObserverable {
     
     private User user;
+    private LogObserver logObserver;
+
+    public Login() {
+        this.logObserver = new SystemLog();
+    }
     private Scanner scan = new Scanner(System.in);
     private String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
     private PassEncrypt encryptedPassword;
@@ -31,6 +36,7 @@ public class Login {
             case 2:
                 this.user = null;
                 System.out.println("Welcome, guest!");
+                notifyObserver("Guest entered the system");
                 break;
             case 3:
                 System.out.println("Thanks for stopping by!");
@@ -51,6 +57,7 @@ public class Login {
             // checking if login credentials are valid
             if (checkUserLogin(username, password)) {
                 System.out.println("Login successful");
+                notifyObserver("User " + username + " logged in");
                 return true;
             } else {
                 // seeing if they would like to attempt to try login again
@@ -155,6 +162,11 @@ public class Login {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public void notifyObserver(String message) {
+        logObserver.updateLog("Login", message);
     }
 
 }

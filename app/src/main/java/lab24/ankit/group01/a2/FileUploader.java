@@ -6,9 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 // For testing
 // C:\Users\ethan\Desktop\eeeee.txt
-public class FileUploader {
+
+import org.checkerframework.checker.units.qual.A;
+public class FileUploader implements LogObserverable {
 
     private static final String REPOSITORY_PATH = "./src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/";
+    private LogObserver logObserver;
+
+    public FileUploader() {
+        this.logObserver = new SystemLog();
+    }
 
     public void upload() {
         System.out.print("Enter the path to the file you want to upload: ");
@@ -37,9 +44,16 @@ public class FileUploader {
                 fos.write(buffer, 0, bytesRead);
             }
             System.out.println("File uploaded successfully!");
+            notifyObserver("File " + sourceFile.getName() + " uploaded successfully");
 
         } catch (IOException e) {
             System.out.println("Error uploading file: " + e.getMessage());
         }
     }
+
+    @Override
+    public void notifyObserver(String message) {
+        this.logObserver.updateLog("FileObserver", message);
+    }
+
 }
