@@ -3,8 +3,8 @@ package lab24.ankit.group01.a2.User_types;
 import lab24.ankit.group01.a2.PassEncrypt;
 import lab24.ankit.group01.a2.ScrollManager;
 import lab24.ankit.group01.a2.UserManager;
-
 import org.json.simple.JSONObject;
+
 
 public abstract class User {
 
@@ -43,6 +43,9 @@ public abstract class User {
         this.encryptedPassword = PassEncrypt.hashPassword(rawPassword);
     }
 
+    public String getUsername(){
+        return this.username;
+    }
     protected String getEmail(){
         return this.email;
     }

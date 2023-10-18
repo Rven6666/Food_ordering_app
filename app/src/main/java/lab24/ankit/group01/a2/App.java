@@ -20,8 +20,10 @@ public class App {
         // displaying menu
         Menu menu = new Menu();
         menu.menuIntro(user);
-        int selection = menu.showMenu(user);
-        menu.menuSelection(selection, user);
+        while (true){
+            this.selection = menu.showMenu(user);
+            menu.menuSelection(selection, user);
+        }
     }
 
     public static void main(String[] args) {
