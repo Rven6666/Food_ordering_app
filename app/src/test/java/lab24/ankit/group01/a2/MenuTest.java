@@ -3,16 +3,15 @@ package lab24.ankit.group01.a2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import lab24.ankit.group01.a2.User_types.Admin;
+import lab24.ankit.group01.a2.User_types.Member;
+import lab24.ankit.group01.a2.User_types.User;
+import org.json.simple.JSONObject;
+import org.junit.Test;
 
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.json.simple.JSONObject;
-
-import lab24.ankit.group01.a2.User_types.User;
-import lab24.ankit.group01.a2.User_types.Admin;
-import lab24.ankit.group01.a2.User_types.Member;
 
 public class MenuTest {
 
@@ -40,7 +39,8 @@ public class MenuTest {
         System.setOut(printStream);
         Menu menu = new Menu();
         int selection = menu.showMenu(member);
-        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit"));
+        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Change username\n"
+        +"7. Change password\n8. Exit"));
     }
 
     @Test
@@ -53,7 +53,8 @@ public class MenuTest {
         System.setOut(printStream);
         Menu menu = new Menu();
         int selection = menu.showMenu(member);
-        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit"));
+        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Change username\n"
+        +"7. Change password\n8. Exit"));
     }
 
     @Test
@@ -66,6 +67,9 @@ public class MenuTest {
         System.setOut(printStream);
         Menu menu = new Menu();
         int selection = menu.showMenu(member);
+        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Change username\n"
+        +"7. Change password\n8. Exit"));
         assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit"));
+
     }
 }

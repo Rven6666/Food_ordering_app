@@ -1,26 +1,27 @@
 package lab24.ankit.group01.a2;
 
+import java.io.*;
+import java.util.*;
+import lab24.ankit.group01.a2.User_types.Admin;
+import lab24.ankit.group01.a2.User_types.Member;
+import lab24.ankit.group01.a2.User_types.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import lab24.ankit.group01.a2.User_types.User;
-import lab24.ankit.group01.a2.User_types.Admin;
-import lab24.ankit.group01.a2.User_types.Member;
 
 public class Login implements LogObserverable {
     
     private User user;
+    private Scanner scan = new Scanner(System.in);
+    private String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
+    private PassEncrypt encryptedPassword;
     private LogObserver logObserver;
 
     public Login() {
         this.logObserver = new SystemLog();
     }
+
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");
@@ -74,12 +75,13 @@ public class Login implements LogObserverable {
         JSONObject userFile = null;
 
         try {
-            userFile = (JSONObject) parser.parse(new FileReader("src/main/java/lab24/ankit/group01/a2/Databases/UserList.json"));
+            userFile = (JSONObject) parser.parse(new FileReader(this.filePath));
         } catch (Exception e) {
             System.out.println("Cannot find UserList.json");
+            e.printStackTrace();
             System.exit(1);
         }
-
+        try{
         JSONArray users = (JSONArray) userFile.get("users");
 
         for (Object user : users) {
@@ -93,10 +95,70 @@ public class Login implements LogObserverable {
                 return true;
             }
         }
+        }catch(Exception e){
+            System.out.println(e);
+        }
 
         return false;
 
     }
+
+    public void changeLoginDetails(String currentUsername, String detailType){
+        String newChoice;
+        String response = "";
+        while (true){
+            System.out.println("Please choose a "+ detailType+" between 4 and 12 characters: ");
+            newChoice = scan.nextLine().strip();
+            if(newChoice.length() >= 4 && newChoice.length() <= 12 ){
+                System.out.println("You entered: " + newChoice + "\nPlease confirm if this is correct? (y/n)");
+                response = scan.nextLine().toLowerCase();
+                if(response.equals("y")) {
+                    updateLoginInfo(currentUsername, newChoice, detailType);
+                    break;
+            } 
+            else {
+                    System.out.println("Invalid entry.");
+                }
+            }
+        }
+
+    }
+
+    public void updateLoginInfo(String currentUser, String updatedDetails, String detailType){
+        JSONParser parser = new JSONParser();
+        JSONObject usersObject = null;
+
+        try {
+            
+            FileReader reader = new FileReader(this.filePath);
+            usersObject = (JSONObject) parser.parse(reader);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        JSONArray users = (JSONArray) usersObject.get("users");
+        for (Object user : users) {
+            JSONObject jsonOb = (JSONObject) user;
+            if (jsonOb.get("username").equals(currentUser)){
+                if(detailType.equals("username")){
+                    jsonOb.put("username", updatedDetails);
+                }else if(detailType.equals("password")){
+                    jsonOb.put("password", encryptedPassword.hashPassword(updatedDetails));
+                }
+            }
+        }
+        try{
+            FileWriter fileWriter = new FileWriter(this.filePath);
+            fileWriter.write(usersObject.toJSONString());
+            fileWriter.close();
+            System.out.println("Password has been updated.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
 
     public User getUser() {
         return user;

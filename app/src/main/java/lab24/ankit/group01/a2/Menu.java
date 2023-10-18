@@ -5,7 +5,9 @@ import lab24.ankit.group01.a2.User_types.User;
 public class Menu implements LogObserverable {
 
     private LogObserver logObserver;
+
     private FileUploader uploader = new FileUploader();
+    Login login = new Login();
 
     public Menu() {
         this.logObserver = new SystemLog();
@@ -16,9 +18,9 @@ public class Menu implements LogObserverable {
         if (user != null){
             name = user.getName();
         }
-        System.out.println("Hello "+ name +" I am then (VSAS) Virtual Scroll Access System.");
-        System.out.println("The portal to the realm of digital wisdom!");
-        System.out.println("I await your selection:");
+        System.out.println("Hello "+ name +". I am VSAS, the Virtual Scroll Access System.\n"
+                            +"The portal to the realm of digital wisdom!\n"
+                            +"I await your selection:");
     }
 
     public int showMenu(User user){
@@ -46,7 +48,7 @@ public class Menu implements LogObserverable {
             }else if (user.isAdmin()){
                                 System.out.println("1. View Scrolls\n2. Add Scrolls\n"
                                 +"3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. " 
-                                +"Create new Users\n7. View users\n8. Delete users\n9. View App stats\n 10. Change username\n"
+                                +"Create new Users\n7. View users\n8. Delete users\n9. View App stats\n10. Change username\n"
                                 +"11. Change password\n12. Exit");
                 int selection = Scan.scanInteger(1, 12);
                 if (selection == 12){
@@ -60,10 +62,7 @@ public class Menu implements LogObserverable {
     }
 
     public void menuSelection(int selection, User user){
-        if (user == null && selection != 1){
-            System.out.println("You must be logged in to do that!");
-            return;
-        }
+
 
         if(user != null && !user.isAdmin()){
             if(selection == 6){
@@ -103,12 +102,13 @@ public class Menu implements LogObserverable {
                 System.out.println("CALL CLASS - To be done - VIEW app stats");
                 break;
             case 10:
-                System.out.println("CALL CLASS - To be done - Change username");
+                login.changeLoginDetails(user.getUsername(),"username");
                 break;
             case 11:
-                System.out.println("CALL CLASS - To be done - Change password");
+                login.changeLoginDetails(user.getUsername(),"password");
                 break;
         }
+
      }
 
 
