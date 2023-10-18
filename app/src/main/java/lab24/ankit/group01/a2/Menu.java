@@ -7,9 +7,11 @@ public class Menu implements LogObserverable {
 
     private LogObserver logObserver;
     private FileUploader uploader = new FileUploader();
+    private Login login;
 
     public Menu() {
         this.logObserver = new SystemLog();
+        this.login = new Login();
     }
 
     public void menuIntro(User user){
