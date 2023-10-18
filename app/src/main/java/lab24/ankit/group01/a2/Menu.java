@@ -2,10 +2,16 @@ package lab24.ankit.group01.a2;
 
 import lab24.ankit.group01.a2.User_types.User;
 
+public class Menu implements LogObserverable {
 
-public class Menu{
+    private LogObserver logObserver;
+
     private FileUploader uploader = new FileUploader();
     Login login = new Login();
+
+    public Menu() {
+        this.logObserver = new SystemLog();
+    }
 
     public void menuIntro(User user){
         String name = "Guest";
@@ -105,5 +111,10 @@ public class Menu{
 
      }
 
+
+     @Override
+     public void notifyObserver(String message) {
+         this.logObserver.updateLog("Menu", message);
+     }
     
 }

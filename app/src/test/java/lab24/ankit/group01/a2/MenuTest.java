@@ -13,7 +13,6 @@ import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 public class MenuTest {
 
     private User admin;
@@ -70,5 +69,7 @@ public class MenuTest {
         int selection = menu.showMenu(member);
         assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Change username\n"
         +"7. Change password\n8. Exit"));
+        assertTrue(byteArrayOutputStream.toString().contains("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n5. Search Scrolls\n6. Exit"));
+
     }
 }
