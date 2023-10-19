@@ -1,17 +1,25 @@
 package lab24.ankit.group01.a2;
 
+import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
 import lab24.ankit.group01.a2.User_types.User;
 
+import java.io.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Menu implements LogObserverable {
 
     private LogObserver logObserver;
     private FileUploader uploader = new FileUploader();
     private Login login;
+    private ScrollSeeker seeker;
 
     public Menu() {
         this.logObserver = new SystemLog();
         this.login = new Login();
+        this.seeker = new ScrollSeeker();
     }
 
     public void menuIntro(User user){
@@ -75,12 +83,58 @@ public class Menu implements LogObserverable {
 
         switch (selection){
             case 1: //preview/view scrolls
-                System.out.println("CALL CLASS - To be done - Show/preview scrolls");
+                seeker.viewScroll();
+                seeker.previewScroll();
                 break;
             case 2: // Add scrolls
                 if (user != null) {
+                    // upload the file
                     uploader.upload();
-                } else {
+
+                    // record the uploaded file information
+                    String path = "/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
+                    File jsonFile = new File(path);
+                    JSONObject scrolls = new JSONObject();
+                    JSONArray scroll_array = new JSONArray();
+                    JSONObject scroll_info = new JSONObject();
+
+                    if (jsonFile.length() == 0){
+                        // write to the empty json file
+                        scroll_info.put("id", uploader.getId());
+                        scroll_info.put("filename", uploader.getFilename());
+                        scroll_info.put("uploader", user.getName());
+                        scroll_info.put("date", uploader.getDate());
+                        scroll_array.add(scroll_info);
+                        scrolls.put("scrolls", scroll_array);
+
+                    } else {
+                        try {
+                            // read the existing json array and write to it
+                            scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
+                            scroll_array = (JSONArray) scrolls.get("scrolls");
+                            scroll_info.put("id", uploader.getId());
+                            scroll_info.put("filename", uploader.getFilename());
+                            scroll_info.put("uploader", user.getName());
+                            scroll_info.put("date", uploader.getDate());
+                            scroll_array.add(scroll_info);
+                            scrolls.put("scrolls", scroll_array);
+
+                        } catch (Exception e){
+                            System.err.println(e);
+                        }
+                    }
+
+                    // write to the json file
+                    try {
+                        FileWriter file = new FileWriter(path);
+                        file.write(scrolls.toJSONString());
+                        file.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                else {
                     System.out.println("You must be logged in to upload files.");
                 }
                 break;
@@ -109,9 +163,7 @@ public class Menu implements LogObserverable {
                 login.changeLoginDetails(user.getUsername(),"password");
                 break;
         }
-
      }
-
 
      @Override
      public void notifyObserver(String message) {
