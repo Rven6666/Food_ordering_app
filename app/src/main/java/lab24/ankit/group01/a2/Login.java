@@ -115,10 +115,9 @@ public class Login implements LogObserverable {
                 if(response.equals("y")) {
                     updateLoginInfo(currentUsername, newChoice, detailType);
                     break;
-            } 
-            else {
-                    System.out.println("Invalid entry.");
-                }
+            }
+            }else{
+                System.out.println("Invalid Input");
             }
         }
 
