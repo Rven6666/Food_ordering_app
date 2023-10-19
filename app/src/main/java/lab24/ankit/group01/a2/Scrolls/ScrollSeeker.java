@@ -1,70 +1,68 @@
 package lab24.ankit.group01.a2.Scrolls;
 import lab24.ankit.group01.a2.Scan;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.FileReader;
+import java.util.Scanner;
 
 public class ScrollSeeker{
-    private String filepath = "/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/Databases/bin_01.txt";
+    private static final String SCROLLS_PATH = "/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
+    private JSONParser parser = new JSONParser();
 
-    public String convertStringToBinary(String input){
-        StringBuilder result = new StringBuilder();
-        char[] chars = input.toCharArray();
-        for (char aChar : chars) {
-            result.append(
-                    String.format("%8s", Integer.toBinaryString(aChar))   // char -> int, auto-cast
-                            .replaceAll(" ", "0")       // zero pads
-            );
-        }
-        return result.toString();
-    }
+    public void viewScroll(){
 
-    /**
-     * right now we are reading it from bin_01.txt
-     * @return
-     */
-    public String previewScroll(String input){
-        String raw = Arrays.stream(input.split(" "))
-                .map(binary -> Integer.parseInt(binary, 2))
-                .map(Character::toString)
-                .collect(Collectors.joining()); // cut the space
-        return raw;
-    }
-
-    public void writeToFile(String content){
         try {
-            FileWriter fileWriter = new FileWriter(filepath);
-            fileWriter.write(content);
-            fileWriter.close();
-        } catch (IOException e){
-            System.out.println(e);
+            JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
+            JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+            System.out.println("Displaying scroll information");
+            for(int i = 0; i < scrolls_array.size(); i++){
+                JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
+                Long id = (Long) scroll_info.get("id");
+                String uploader = (String) scroll_info.get("uploader");
+                String filename = (String) scroll_info.get("filename");
+                String date = (String) scroll_info.get("date");
+
+                // Print scroll information in the desired format
+                System.out.println("id = " + id);
+                System.out.println("uploader = " + uploader);
+                System.out.println("upload_date = " + date);
+                System.out.println("filename = " + filename + "\n");
+            }
+
+        } catch (Exception e){
+            System.err.println(e);
         }
     }
 
-    public String splitBinary(String binary, int blockSize, String separator) {
+    public void previewScroll(){
 
-        List<String> result = new ArrayList<>();
-        int index = 0;
-        while (index < binary.length()) {
-            result.add(binary.substring(index, Math.min(index + blockSize, binary.length())));
-            index += blockSize;
+        try {
+            JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
+            JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+
+            System.out.print("Please select a scroll id to preview: ");
+            int id = Scan.scanInteger(1, scrolls_array.size());
+            JSONObject scroll_info = (JSONObject) scrolls_array.get(id-1);
+            // open the file
+            String filename = (String) scroll_info.get("filename");
+
+            File fileObj = new File("/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename);
+            Scanner scanner = new Scanner(fileObj);
+            if (scanner.hasNextLine()) {
+                String firstLine = scanner.nextLine();
+                // Print a shortened version of the first line, e.g., the first 50 characters
+                int maxLength = Math.min(firstLine.length(), 50);
+                System.out.println(firstLine.substring(0, maxLength));
+            }
+
+        } catch (Exception e){
+            System.err.println(e);
         }
 
-        return result.stream().collect(Collectors.joining(separator));
-    }
-
-
-    public static void main(String[] args) {
-        ScrollSeeker seeker = new ScrollSeeker();
-        System.out.print("Enter a message to print to the screen: ");
-        String bin = seeker.splitBinary(seeker.convertStringToBinary(Scan.scanString(null)), 8, " ");
-        System.out.printf("Binary representation: %s\n", bin);
-        seeker.writeToFile(bin);
-        System.out.printf("Original message after decodiing: %s\n", seeker.previewScroll(bin));
+        // prints newline before menu selection
+        System.out.println();
     }
 }
