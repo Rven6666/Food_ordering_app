@@ -13,11 +13,10 @@ import org.json.simple.parser.JSONParser;
 
 public class UserManager{
     // attributes for UserManager class
-    private final String filePath = "lab24/ankit/group01/a2/Databases/UserList.json";
-    private JSONParser parser = new JSONParser();
-    private HashMap<Integer, Object> userList;
+    private final static String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
+    private final static JSONParser parser = new JSONParser();
 
-    public void createUser(){
+    public static void createUser(){
 
         File file = new File(filePath);
 
@@ -53,9 +52,9 @@ public class UserManager{
         // create new user json object
         JSONObject user = new JSONObject();
         user.put("id", getNextID());
-        user.put("full_name", full_name);
+        user.put("name", full_name);
         user.put("email", email);
-        user.put("phone_number", phone_number);
+        user.put("phone number", phone_number);
         user.put("type", privilege);
         user.put("password", password);
         user.put("username", username);
@@ -86,7 +85,8 @@ public class UserManager{
     /**
      * remove a user from UserList
      */
-    public void removeUser(){
+    public static void removeUser(){
+
         System.out.println("Displaying User Information...\n");
         displayUserList();
         System.out.print("Please choose an ID to remove: ");
@@ -175,7 +175,7 @@ public class UserManager{
 
     }
 
-    public String getNextID() {
+    public static String getNextID() {
         JSONObject obj = null;
 
         try {
@@ -199,7 +199,7 @@ public class UserManager{
     /**
      * display users from UserList
      */
-    public void displayUserList(){
+    public static void displayUserList(){
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
             JSONArray users = (JSONArray) jsonObject.get("users");
@@ -218,7 +218,7 @@ public class UserManager{
      * display associated user info
      * @param user, passed in as param
      */
-    public void displayUserInfo(JSONObject user){
+    public static void displayUserInfo(JSONObject user){
         Set<String> setKeys = user.keySet();
 
         for(String key : setKeys){
@@ -231,7 +231,7 @@ public class UserManager{
      * get user list from the UserList database
      * @return, a JSONArray containing user information
      */
-    public JSONArray getUserList(){
+    public static JSONArray getUserList(){
         JSONArray users = null;
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
@@ -245,10 +245,6 @@ public class UserManager{
 
     public HashMap<Integer, Object> getUsers() {
         return null;
-    }
-
-    public int getUserCount(){
-        return this.userList.size();
     }
 
 }

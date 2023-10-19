@@ -1,4 +1,7 @@
 package lab24.ankit.group01.a2.Scrolls;
+
+import lab24.ankit.group01.a2.AppState;
+
 import lab24.ankit.group01.a2.Scan;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,8 +11,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class ScrollSeeker{
-    private static final String SCROLLS_PATH = "/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
+public class ScrollSeeker implements AppState {
+    private static final String SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
     private JSONParser parser = new JSONParser();
 
     public void viewScroll(){
@@ -49,7 +52,7 @@ public class ScrollSeeker{
             // open the file
             String filename = (String) scroll_info.get("filename");
 
-            File fileObj = new File("/Users/obie/Desktop/SOFT2412/Assignments/A2/Lab24-Ankit-Group01-A2/app/src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename);
+            File fileObj = new File("src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename);
             Scanner scanner = new Scanner(fileObj);
             if (scanner.hasNextLine()) {
                 String firstLine = scanner.nextLine();

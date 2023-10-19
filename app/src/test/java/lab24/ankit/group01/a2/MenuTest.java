@@ -6,9 +6,6 @@ import java.io.PrintStream;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
-import lab24.ankit.group01.a2.User_types.User;
-import lab24.ankit.group01.a2.User_types.Admin;
-import lab24.ankit.group01.a2.User_types.Member;
 
 
 public class MenuTest {

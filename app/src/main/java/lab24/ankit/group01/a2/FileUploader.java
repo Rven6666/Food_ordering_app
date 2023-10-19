@@ -1,6 +1,8 @@
 package lab24.ankit.group01.a2;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,24 +12,35 @@ import java.time.LocalDate;
 // C:\Users\ethan\Desktop\eeeee.txt
 
 import org.checkerframework.checker.units.qual.A;
-public class FileUploader implements LogObserverable {
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+public class FileUploader implements LogObserverable, AppState {
 
     private static final String REPOSITORY_PATH = "./src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/";
-    private LogObserver logObserver;
-    private int id;
+    private final LogObserver logObserver = new SystemLog();
+    private final User user;
     private String filename;
 
-    public FileUploader() {
-        this.logObserver = new SystemLog();
-        // set id to 0
-        this.id = 0;
+    public FileUploader(User user) {
+        this.user = user;
     }
 
     public void upload() {
-        System.out.print("Enter the path to the file you want to upload: ");
-        String filePath = Scan.scanString(null);
-        File sourceFile = new File(filePath);
 
+        File sourceFile = null;
+
+        while (sourceFile == null) {
+            System.out.print("Enter the path to the file you want to upload: ");
+            String filePath = Scan.scanString(null);
+            sourceFile = new File(filePath);
+            if (!sourceFile.exists()) {
+                System.out.println("The specified file does not exist.");
+                sourceFile = null;
+            }
+        }
+       
         // Check if the 'uploaded_scrolls' directory exists, if not, create it
         File repositoryDir = new File(REPOSITORY_PATH);
         if (!repositoryDir.exists()) {
@@ -35,11 +48,7 @@ public class FileUploader implements LogObserverable {
         }
 
         File destFile = new File(REPOSITORY_PATH + sourceFile.getName());
-
-        if (!sourceFile.exists()) {
-            System.out.println("The specified file does not exist.");
-            return;
-        }
+        
 
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {
@@ -51,13 +60,50 @@ public class FileUploader implements LogObserverable {
             }
             System.out.println("File uploaded successfully!");
 
-            // increment id for the next scroll
-            id++;
             notifyObserver("File " + sourceFile.getName() + " uploaded successfully");
             this.filename = sourceFile.getName();
 
         } catch (IOException e) {
             System.out.println("Error uploading file: " + e.getMessage());
+        }
+
+        updateScrolls();
+
+    }
+
+    public void updateScrolls() {
+        // record the uploaded file information
+        String path = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
+        File jsonFile = new File(path);
+
+        if (!jsonFile.exists()){
+            // File does not exist, not considered empty
+            System.out.println("File does not exist.");
+            return;
+        }
+
+        JSONObject scroll_info = new JSONObject();
+        scroll_info.put("id", getId());
+        scroll_info.put("filename", getFilename());
+        scroll_info.put("uploader", user.getUsername());
+        scroll_info.put("date", getDate());
+
+        JSONObject scrolls = null;
+
+        try {
+            scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
+            ((JSONArray)scrolls.get("scrolls")).add(scroll_info);
+        } catch (Exception e){
+            System.err.println(e);
+        }
+
+        // write to the json file
+        try {
+            FileWriter fileWriter = new FileWriter(jsonFile);
+            fileWriter.write(scrolls.toJSONString());
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -66,7 +112,8 @@ public class FileUploader implements LogObserverable {
      * @return, the id of the person
      */
     public int getId(){
-        return this.id;
+        // get the latest id for the scroll they've uploaded or something.
+        return 0;
     }
 
     /**

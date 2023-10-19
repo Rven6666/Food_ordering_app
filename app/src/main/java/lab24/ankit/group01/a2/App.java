@@ -3,26 +3,62 @@
  */
 package lab24.ankit.group01.a2;
 
-import lab24.ankit.group01.a2.User_types.User;
+import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
 
 public class App {
 
     public User user;
-    public Menu menu;
-    public int selection;
+    public State state;
+    public AppState appState;
 
     public App () {
-        // displaying login screen
-        Login login = new Login();
-        login.displayLoginScreen();
-        user = login.getUser();
 
-        // displaying menu
-        Menu menu = new Menu();
-        menu.menuIntro(user);
-        while (true){
-            this.selection = menu.showMenu(user);
-            menu.menuSelection(selection, user);
+        state = State.LOGIN;
+
+        while (true) {
+            switch (state) {
+                case LOGIN:
+                    // login screen
+                    Login login = new Login();
+                    login.displayLoginScreen();
+                    user = login.getUser();
+                    state = login.getNextState();
+                    break;
+
+                case MENU:
+                    // main menu
+                    Menu menu = new Menu(user);
+                    menu.menuIntro();
+                    int selection = menu.showMenu();
+                    menu.menuSelection(selection);
+                    state = menu.getNextState();
+                    break;
+
+                case UPLOAD:
+                    FileUploader upload = new FileUploader(user);
+                    upload.upload();
+                    state = upload.getNextState();
+                    break;
+
+                case VIEWSCROLL:
+                    ScrollSeeker seeker = new ScrollSeeker();
+                    seeker.viewScroll();
+                    seeker.previewScroll();
+                    state = seeker.getNextState();
+                    break;
+                
+                case UPDATEDETAILS:
+                    UpdateDetails update = new UpdateDetails(user);
+                    String detail = update.getDetailToUpdate();
+                    String newValue = update.getNewValue(detail);
+                    update.updateDetail(detail, newValue);
+                    user = update.getNewUser();
+                    state = update.getNextState();
+                    break;
+                
+                
+
+            }
         }
     }
 

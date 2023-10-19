@@ -2,26 +2,17 @@ package lab24.ankit.group01.a2;
 
 import java.io.*;
 import java.util.*;
-import lab24.ankit.group01.a2.User_types.Admin;
-import lab24.ankit.group01.a2.User_types.Member;
-import lab24.ankit.group01.a2.User_types.User;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 
-public class Login implements LogObserverable {
+public class Login implements LogObserverable, AppState {
     
     private User user;
-    private LogObserver logObserver;
-
-    public Login() {
-        this.logObserver = new SystemLog();
-    }
-    private Scanner scan = new Scanner(System.in);
-    private String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
-    private PassEncrypt encryptedPassword;
-
+    private final LogObserver logObserver = new SystemLog();
+    private final String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");
@@ -88,10 +79,7 @@ public class Login implements LogObserverable {
             JSONObject userObject = (JSONObject) user;
             if (userObject.get("username").equals(username) && 
             PassEncrypt.checkPassword(password, userObject.get("password").toString())) {
-                if (userObject.get("type").equals("member"))
-                    this.user = new Member(userObject);
-                else
-                    this.user = new Admin(userObject);
+                this.user = new User(userObject);
                 return true;
             }
         }
@@ -102,62 +90,6 @@ public class Login implements LogObserverable {
         return false;
 
     }
-
-    public void changeLoginDetails(String currentUsername, String detailType){
-        String newChoice;
-        String response = "";
-        while (true){
-            System.out.println("Please choose a "+ detailType+" between 4 and 12 characters: ");
-            newChoice = scan.nextLine().strip();
-            if(newChoice.length() >= 4 && newChoice.length() <= 12 ){
-                System.out.println("You entered: " + newChoice + "\nPlease confirm if this is correct? (y/n)");
-                response = scan.nextLine().toLowerCase();
-                if(response.equals("y")) {
-                    updateLoginInfo(currentUsername, newChoice, detailType);
-                    break;
-            }
-            }else{
-                System.out.println("Invalid Input");
-            }
-        }
-
-    }
-
-    public void updateLoginInfo(String currentUser, String updatedDetails, String detailType){
-        JSONParser parser = new JSONParser();
-        JSONObject usersObject = null;
-
-        try {
-            
-            FileReader reader = new FileReader(this.filePath);
-            usersObject = (JSONObject) parser.parse(reader);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        JSONArray users = (JSONArray) usersObject.get("users");
-        for (Object user : users) {
-            JSONObject jsonOb = (JSONObject) user;
-            if (jsonOb.get("username").equals(currentUser)){
-                if(detailType.equals("username")){
-                    jsonOb.put("username", updatedDetails);
-                }else if(detailType.equals("password")){
-                    jsonOb.put("password", encryptedPassword.hashPassword(updatedDetails));
-                }
-            }
-        }
-        try{
-            FileWriter fileWriter = new FileWriter(this.filePath);
-            fileWriter.write(usersObject.toJSONString());
-            fileWriter.close();
-            System.out.println("Password has been updated.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
 
     public User getUser() {
         return user;
