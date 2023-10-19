@@ -42,7 +42,7 @@ public class Menu implements LogObserverable, AppState {
             System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n" +
                             "5. Search Scrolls\n6. Update Profile Details\n7. Exit");
             selection = Scan.scanInteger(1, 8);
-            if (selection == 8) exit();
+            if (selection == 7) exit();
         } else {
             // getting choice from admin
             System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n"
@@ -50,7 +50,7 @@ public class Menu implements LogObserverable, AppState {
                             +"7. Create New Users\n8. View Users\n9. Delete Users\n"
                             +"10. View app stats\n11. Exit");
             selection = Scan.scanInteger(1, 11);
-            if (selection == 12) exit();
+            if (selection == 11) exit();
         }
         return selection;
     }

@@ -46,8 +46,8 @@ public class UserManager{
         String password = PassEncrypt.hashPassword(Scan.scanString(null));
 
         // choose user privilege/type
-        System.out.print("Please choose privilege (Admin/Member/Guest): ");
-        String privilege = Scan.scanString(new ArrayList<String>(Arrays.asList("Admin", "Member", "Guest"))).toLowerCase();
+        System.out.print("Please choose privilege (admin/member): ");
+        String privilege = Scan.scanString(new ArrayList<String>(Arrays.asList("admin", "member")));
 
         // create new user json object
         JSONObject user = new JSONObject();
@@ -80,6 +80,9 @@ public class UserManager{
             e.printStackTrace();
             System.exit(1);
         }
+
+        System.out.println("Successfully created new user!");
+
     }
 
     /**
@@ -223,6 +226,7 @@ public class UserManager{
 
         for(String key : setKeys){
             // display user info
+            if (key.equals("password")) continue;
             System.out.printf("%s: %s\n", key, user.get(key));
         }
     }
