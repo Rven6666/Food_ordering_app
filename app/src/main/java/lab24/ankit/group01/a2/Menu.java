@@ -1,8 +1,6 @@
 package lab24.ankit.group01.a2;
 
-import lab24.ankit.group01.a2.UserManager;
-
-public class Menu implements LogObserverable, AppState {
+public class Menu implements AppState {
 
     private final LogObserver logObserver = new SystemLog();
     private final User user;
@@ -80,23 +78,21 @@ public class Menu implements LogObserverable, AppState {
                 nextState = State.UPDATEDETAILS;
                 break;
             case 7:
-                UserManager.createUser();
+                UserManager userManager = new UserManager();
+                userManager.createUser();
                 break;
             case 8:
-                UserManager.displayUserList();
+                UserManager userManager2 = new UserManager();
+                userManager2.displayUserList();
                 break;
             case 9:
-                UserManager.removeUser();
+                UserManager userManager3 = new UserManager();
+                userManager3.removeUser();
                 break;
             case 10:
                 System.out.println("CALL CLASS - To be done - VIEW app stats");
                 break;
         }
-     }
-
-     @Override
-     public void notifyObserver(String message) {
-         this.logObserver.updateLog("Menu", message);
      }
 
      @Override

@@ -11,10 +11,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class UpdateDetails implements AppState {
+public class UpdateDetails implements AppState, LogObserverable {
 
     private User user;
     private final String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
+    private final LogObserver systemLog = new SystemLog();
     
     public UpdateDetails(User user) {
         this.user = user;
@@ -70,6 +71,8 @@ public class UpdateDetails implements AppState {
                 else
                     jsonOb.put(detail, newValue);
                 
+                notifyObserver("User with id " + this.user.getID() + " updated their " + detail);
+
                 // updating the user object
                 this.user = new User(jsonOb);
 
@@ -90,6 +93,11 @@ public class UpdateDetails implements AppState {
 
     public User getNewUser() {
         return user;
+    }
+
+    @Override
+    public void notifyObserver(String message) {
+        systemLog.updateLog("Update Details", message);
     }
 
 }

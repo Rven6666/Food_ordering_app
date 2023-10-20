@@ -11,12 +11,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
-public class UserManager{
+public class UserManager implements LogObserverable {
     // attributes for UserManager class
     private final static String filePath = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
     private final static JSONParser parser = new JSONParser();
+    private final static LogObserver systemLog = new SystemLog();
 
-    public static void createUser(){
+    public void createUser(){
 
         File file = new File(filePath);
 
@@ -82,13 +83,14 @@ public class UserManager{
         }
 
         System.out.println("Successfully created new user!");
+        notifyObserver("New user created with id " + user.get("id"));
 
     }
 
     /**
      * remove a user from UserList
      */
-    public static void removeUser(){
+    public void removeUser(){
 
         System.out.println("Displaying User Information...\n");
         displayUserList();
@@ -107,6 +109,7 @@ public class UserManager{
 
             // output successful user removal message
             System.out.println("\nUser removed successfully:");
+            notifyObserver("User " + removed_user.get("username") + " removed");
             displayUserInfo(removed_user);
 
         }
@@ -168,6 +171,7 @@ public class UserManager{
 
             // output successful user edit message
             System.out.println("\nUser information edited successfully:");
+            notifyObserver("User with id " + user.get("id") + " updated " + field);
             displayUserInfo(user);
 
         }
@@ -178,7 +182,7 @@ public class UserManager{
 
     }
 
-    public static String getNextID() {
+    public String getNextID() {
         JSONObject obj = null;
 
         try {
@@ -202,7 +206,7 @@ public class UserManager{
     /**
      * display users from UserList
      */
-    public static void displayUserList(){
+    public void displayUserList(){
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
             JSONArray users = (JSONArray) jsonObject.get("users");
@@ -221,7 +225,7 @@ public class UserManager{
      * display associated user info
      * @param user, passed in as param
      */
-    public static void displayUserInfo(JSONObject user){
+    public void displayUserInfo(JSONObject user){
         Set<String> setKeys = user.keySet();
 
         for(String key : setKeys){
@@ -235,7 +239,7 @@ public class UserManager{
      * get user list from the UserList database
      * @return, a JSONArray containing user information
      */
-    public static JSONArray getUserList(){
+    public JSONArray getUserList(){
         JSONArray users = null;
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
@@ -249,6 +253,11 @@ public class UserManager{
 
     public HashMap<Integer, Object> getUsers() {
         return null;
+    }
+
+    @Override
+    public void notifyObserver(String message) {
+        systemLog.updateLog("UserManager", message);
     }
 
 }
