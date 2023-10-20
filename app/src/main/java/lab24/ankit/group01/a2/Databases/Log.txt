@@ -67,3 +67,5 @@
 2023-10-20 08:10:27 [Login]: User member logged in
 2023-10-20 08:43:10 [Login]: User member logged in
 2023-10-20 08:45:06 [Login]: User admin logged in
+2023-10-20 11:17:51 [Login]: User member logged in
+2023-10-20 11:23:04 [Login]: User admin logged in
