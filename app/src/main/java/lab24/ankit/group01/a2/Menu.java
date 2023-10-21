@@ -7,6 +7,7 @@ public class Menu implements AppState {
     private final String name;
     
     private State nextState;
+    private final ScrollManager manager = new ScrollManager();
 
     public Menu(User user) {
         this.user = user;
@@ -37,18 +38,18 @@ public class Menu implements AppState {
             if (selection == 2) exit();
         } else if(!user.isAdmin()){
             // getting choice from user
-            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Recieve Scrolls\n" +
-                            "5. Search Scrolls\n6. Update Profile Details\n7. Exit");
+            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Remove Scrolls\n" +
+                            "5. Receive Scrolls\n6. Search Scrolls\n7. Update Profile Details\n8. Exit");
             selection = Scan.scanInteger(1, 8);
-            if (selection == 7) exit();
+            if (selection == 8) exit();
         } else {
             // getting choice from admin
-            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n"
-                            +"4. Recieve Scrolls\n5. Search Scrolls\n6. Update Profile Details\n"
-                            +"7. Create New Users\n8. View Users\n9. Delete Users\n"
-                            +"10. View app stats\n11. Exit");
-            selection = Scan.scanInteger(1, 11);
-            if (selection == 11) exit();
+            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scroll\n4. Remove Scroll\n"
+                            +"5. Receive Scrolls\n6. Search Scrolls\n7. Update Profile Details\n"
+                            +"8. Create New Users\n9. View Users\n10. Delete Users\n"
+                            +"11. View app stats\n12. Exit");
+            selection = Scan.scanInteger(1, 12);
+            if (selection == 12) exit();
         }
         return selection;
     }
@@ -62,34 +63,37 @@ public class Menu implements AppState {
             case 1: //preview/view scrolls
                 nextState = State.VIEWSCROLL;
                 break;
-            case 2: // Add scrolls
+            case 2: // Add scrolls (only for registered user)
                 nextState = State.UPLOAD;
                 break;
-            case 3: //Edit Scrolls
-                System.out.println("CALL CLASS - To be done - EDIT scrolls");
+            case 3: //Edit Scrolls (only for registered user)
+               manager.editScroll(user);
                 break;
-            case 4: //recieve Scrolls (download)
+            case 4: // Remove Scroll (only for registered user)
+                manager.removeScroll(user);
+                break;
+            case 5: //receive Scrolls (download)
                 System.out.println("CALL CLASS - To be done - DOWNLOAD scrolls");
                 break;
-            case 5://Search Scrolls
+            case 6://Search Scrolls
                 System.out.println("CALL CLASS - To be done - SEARCH scrolls");
                 break;
-            case 6:
+            case 7:
                 nextState = State.UPDATEDETAILS;
                 break;
-            case 7:
+            case 8:
                 UserManager userManager = new UserManager();
                 userManager.createUser();
                 break;
-            case 8:
+            case 9:
                 UserManager userManager2 = new UserManager();
                 userManager2.displayUserList();
                 break;
-            case 9:
+            case 10:
                 UserManager userManager3 = new UserManager();
                 userManager3.removeUser();
                 break;
-            case 10:
+            case 11:
                 System.out.println("CALL CLASS - To be done - VIEW app stats");
                 break;
         }

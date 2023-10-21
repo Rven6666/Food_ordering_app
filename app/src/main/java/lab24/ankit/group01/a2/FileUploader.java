@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class FileUploader implements LogObserverable, AppState {
-
     private static final String REPOSITORY_PATH = "./src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/";
     private final LogObserver logObserver = new SystemLog();
     private final User user;
@@ -85,16 +84,20 @@ public class FileUploader implements LogObserverable, AppState {
         JSONObject scroll_info = new JSONObject();
         scroll_info.put("id", getId());
         scroll_info.put("filename", getFilename());
-        scroll_info.put("uploader", user.getUsername());
+        scroll_info.put("uploader", user.getName());
         scroll_info.put("date", getDate());
 
-        JSONObject scrolls = null;
+        JSONObject scrolls = new JSONObject();
 
         try {
             scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
             ((JSONArray)scrolls.get("scrolls")).add(scroll_info);
         } catch (Exception e){
-            System.err.println(e);
+            // we write to the scroll_array scroll_info
+            // as the current scroll database are empty
+            JSONArray scroll_array = new JSONArray();
+            scroll_array.add(scroll_info);
+            scrolls.put("scrolls", scroll_array);
         }
 
         // write to the json file
@@ -113,7 +116,7 @@ public class FileUploader implements LogObserverable, AppState {
      */
     public int getId(){
         // get the latest id for the scroll they've uploaded or something.
-        return 0;
+        return Integer.valueOf(user.getID());
     }
 
     /**

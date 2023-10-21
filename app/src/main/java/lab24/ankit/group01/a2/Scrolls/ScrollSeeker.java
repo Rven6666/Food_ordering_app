@@ -20,6 +20,12 @@ public class ScrollSeeker implements AppState {
         try {
             JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
             JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+
+            if (scrolls_array.isEmpty()){
+                // throw new exception & return to menu
+                throw new Exception();
+            }
+
             System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
@@ -36,7 +42,9 @@ public class ScrollSeeker implements AppState {
             }
 
         } catch (Exception e){
-            System.err.println(e);
+            // file is empty, return to menu
+            System.out.println("No Scrolls to view. Returning to menu.");
+            return;
         }
     }
 
@@ -45,6 +53,11 @@ public class ScrollSeeker implements AppState {
         try {
             JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
             JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+
+            if (scrolls_array.isEmpty()){
+                // throw new exception & return to menu
+                throw new Exception();
+            }
 
             System.out.print("Please select a scroll id to preview: ");
             int id = Scan.scanInteger(1, scrolls_array.size());
@@ -62,7 +75,9 @@ public class ScrollSeeker implements AppState {
             }
 
         } catch (Exception e){
-            System.err.println(e);
+            // file is empty, returning to menu
+            System.out.println("No Scrolls to preview. Returning to menu.\n");
+            return;
         }
 
         // prints newline before menu selection
