@@ -1,6 +1,8 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.Scrolls;
 
+import lab24.ankit.group01.a2.Scan;
 import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
+import lab24.ankit.group01.a2.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

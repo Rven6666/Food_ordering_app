@@ -1,5 +1,8 @@
 package lab24.ankit.group01.a2;
 
+import lab24.ankit.group01.a2.Scrolls.ScrollManager;
+import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
+
 public class Menu implements AppState {
 
     private final LogObserver logObserver = new SystemLog();
@@ -8,6 +11,7 @@ public class Menu implements AppState {
     
     private State nextState;
     private final ScrollManager manager = new ScrollManager();
+    private final ScrollSeeker seeker = new ScrollSeeker();
 
     public Menu(User user) {
         this.user = user;
@@ -73,10 +77,10 @@ public class Menu implements AppState {
                 manager.removeScroll(user);
                 break;
             case 5: //receive Scrolls (download)
-                System.out.println("CALL CLASS - To be done - DOWNLOAD scrolls");
+                seeker.downloadScroll(user);
                 break;
             case 6://Search Scrolls
-                System.out.println("CALL CLASS - To be done - SEARCH scrolls");
+                seeker.searchFilter();
                 break;
             case 7:
                 nextState = State.UPDATEDETAILS;
