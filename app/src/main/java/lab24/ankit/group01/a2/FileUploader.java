@@ -8,8 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
-// For testing
-// C:\Users\ethan\Desktop\eeeee.txt
 
 import org.checkerframework.checker.units.qual.A;
 import org.json.simple.JSONArray;
