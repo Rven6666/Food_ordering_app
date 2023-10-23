@@ -33,17 +33,21 @@ public class ScrollManager{
             System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-                Long id = (Long) scroll_info.get("id");
-                String uploader = (String) scroll_info.get("uploader");
-                String filename = (String) scroll_info.get("filename");
-                String date = (String) scroll_info.get("date");
 
-                if (id == Long.valueOf(id)){
-                    // Print scroll information in the desired format
-                    System.out.println("id = " + id);
-                    System.out.println("uploader = " + uploader);
-                    System.out.println("upload_date = " + date);
-                    System.out.println("filename = " + filename + "\n");
+                String date = (String) scroll_info.get("date");
+                String uploader_id = (String) scroll_info.get("uploader_id");
+                String filename = (String) scroll_info.get("filename");
+                String file_id = (String) scroll_info.get("file_id");
+                Long version = (Long) scroll_info.get("version");
+
+                if (uploader_id.equals(user.getID())){
+                    // show scroll corresponding to the ones
+                    // only uploaded by the user
+                    System.out.println("date = " + date);
+                    System.out.println("uploader id = " + uploader_id);
+                    System.out.println("filename = " + filename);
+                    System.out.println("file id = " + file_id);
+                    System.out.println("version = " + version);
                 }
             }
 
@@ -75,7 +79,7 @@ public class ScrollManager{
             System.out.printf("Corresponding binary representation: %s\n\n", binary_content);
 
         } catch (Exception e){
-            System.err.println(e);
+            System.out.println("No scroll to display and edit. Returning to menu.\n");
         }
     }
 
@@ -102,17 +106,21 @@ public class ScrollManager{
             System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-                Long id = (Long) scroll_info.get("id");
-                String uploader = (String) scroll_info.get("uploader");
-                String filename = (String) scroll_info.get("filename");
-                String date = (String) scroll_info.get("date");
 
-                if (id == Long.valueOf(user.getID())){ // need to enforce a check on this to be based on the id not name
-                    // print scroll information
-                    System.out.println("id = " + id);
-                    System.out.println("uploader = " + uploader);
-                    System.out.println("upload_date = " + date);
-                    System.out.println("filename = " + filename + "\n");
+                String date = (String) scroll_info.get("date");
+                String uploader_id = (String) scroll_info.get("uploader_id");
+                String filename = (String) scroll_info.get("filename");
+                String file_id = (String) scroll_info.get("file_id");
+                Long version = (Long) scroll_info.get("version");
+
+                if (uploader_id.equals(user.getID())){
+                    // show scroll corresponding to the ones
+                    // only uploaded by the user
+                    System.out.println("date = " + date);
+                    System.out.println("uploader id = " + uploader_id);
+                    System.out.println("filename = " + filename);
+                    System.out.println("file id = " + file_id);
+                    System.out.println("version = " + version);
                 }
             }
 
@@ -150,7 +158,7 @@ public class ScrollManager{
             }
 
         } catch (Exception e){
-            System.err.println(e);
+            System.out.println("No scroll to display and remove. Returning to menu.\n");
         }
     }
 
@@ -175,16 +183,18 @@ public class ScrollManager{
 
         for(int i = 0; i < scrolls_array.size(); i++){
             JSONObject scroll_temp = (JSONObject) scrolls_array.get(i);
-            Long new_id = Long.valueOf(i+1); // write id to the new scroll_temp
-            String uploader = (String) scroll_temp.get("uploader");
-            String filename = (String) scroll_temp.get("filename");
             String date = (String) scroll_temp.get("date");
+            String uploader_id = (String) scroll_temp.get("uploader_id");
+            String filename = (String) scroll_temp.get("filename");
+            String file_id = Integer.toString(i+1); // write id to the new scroll_temp
+            Long version = (Long) scroll_temp.get("version");
 
             // update the scrolls json database information
-            scroll_temp.put("id", new_id);
-            scroll_temp.put("uploader", uploader);
-            scroll_temp.put("filename", filename);
             scroll_temp.put("date", date);
+            scroll_temp.put("uploader_id", uploader_id);
+            scroll_temp.put("filename", filename);
+            scroll_temp.put("file_id", file_id);
+            scroll_temp.put("version", version);
 
             // add to the updated scroll array
             updated_scrolls_array.add(scroll_temp);

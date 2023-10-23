@@ -47,10 +47,10 @@ public class FileUploader implements LogObserverable, AppState {
         // create a new folder to store the file and all its versions if edited
         final String FOLDER_PATH = REPOSITORY_PATH + sourceFile.getName();
         File fileDir = new File(FOLDER_PATH);
-        if (!fileDir.exists()) {
-            System.out.println("Error: There is already a file with this name in the database.");
-            return;
-        }   
+//        if (!fileDir.exists()) {
+//            System.out.println("Error: There is already a file with this name in the database.");
+//            return; I am going to comment this out cuz wtf is going on here?
+//        }
         fileDir.mkdir();
 
         File destFile = new File(FOLDER_PATH + sourceFile.getName() + "-0");
@@ -88,9 +88,8 @@ public class FileUploader implements LogObserverable, AppState {
         }
 
         JSONObject scroll_info = new JSONObject();
-        scroll_info.put("id", getId());
         scroll_info.put("filename", getFilename());
-        scroll_info.put("uploader", user.getName());
+        scroll_info.put("uploader_id", user.getID());
         scroll_info.put("date", getDate());
         scroll_info.put("version", 0);
 
@@ -98,11 +97,15 @@ public class FileUploader implements LogObserverable, AppState {
 
         try {
             scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
+            int file_id = ((JSONArray)scrolls.get("scrolls")).size() + 1;
+            scroll_info.put("file_id", file_id);
+
             ((JSONArray)scrolls.get("scrolls")).add(scroll_info);
         } catch (Exception e){
             // we write to the scroll_array scroll_info
             // as the current scroll database are empty
             JSONArray scroll_array = new JSONArray();
+            scroll_info.put("file_id", "1");
             scroll_array.add(scroll_info);
             scrolls.put("scrolls", scroll_array);
         }
@@ -116,15 +119,6 @@ public class FileUploader implements LogObserverable, AppState {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * return the id of the file being uploaded
-     * @return, the id of the person
-     */
-    public int getId(){
-        // get the latest id for the scroll they've uploaded or something.
-        return Integer.valueOf(user.getID());
     }
 
     /**

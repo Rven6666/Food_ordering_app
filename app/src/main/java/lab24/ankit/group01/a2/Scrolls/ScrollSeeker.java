@@ -33,16 +33,19 @@ public class ScrollSeeker implements AppState {
             System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-                Long id = (Long) scroll_info.get("id");
-                String uploader = (String) scroll_info.get("uploader");
-                String filename = (String) scroll_info.get("filename");
-                String date = (String) scroll_info.get("date");
 
-                // Print scroll information in the desired format
-                System.out.println("id = " + id);
-                System.out.println("uploader = " + uploader);
-                System.out.println("upload_date = " + date);
-                System.out.println("filename = " + filename + "\n");
+                String date = (String) scroll_info.get("date");
+                String uploader_id = (String) scroll_info.get("uploader_id");
+                String filename = (String) scroll_info.get("filename");
+                String file_id = (String) scroll_info.get("file_id");
+                Long version = (Long) scroll_info.get("version");
+
+                System.out.println("date = " + date);
+                System.out.println("uploader id = " + uploader_id);
+                System.out.println("filename = " + filename);
+                System.out.println("file id = " + file_id);
+                System.out.println("version = " + version);
+                System.out.println();
             }
 
         } catch (Exception e){
@@ -109,16 +112,18 @@ public class ScrollSeeker implements AppState {
             System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-                Long id = (Long) scroll_info.get("id");
-                String uploader = (String) scroll_info.get("uploader");
-                String filename = (String) scroll_info.get("filename");
                 String date = (String) scroll_info.get("date");
+                String uploader_id = (String) scroll_info.get("uploader_id");
+                String filename = (String) scroll_info.get("filename");
+                String file_id = (String) scroll_info.get("file_id");
+                Long version = (Long) scroll_info.get("version");
 
                 // Print scroll information in the desired format
-                System.out.println("id = " + id);
-                System.out.println("uploader = " + uploader);
-                System.out.println("upload_date = " + date);
-                System.out.println("filename = " + filename + "\n");
+                System.out.println("date = " + date);
+                System.out.println("uploader id = " + uploader_id);
+                System.out.println("filename = " + filename);
+                System.out.println("file id = " + file_id);
+                System.out.println("version = " + version);
             }
 
             System.out.print("Select a scroll to download, specify an id: ");
