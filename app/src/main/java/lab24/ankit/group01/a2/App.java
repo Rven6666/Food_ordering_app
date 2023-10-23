@@ -66,5 +66,3 @@ public class App {
     }
 
 }
-
-///blablablabla Will delete this in next commit, it is for creating evidence that I know how to commit for the report
