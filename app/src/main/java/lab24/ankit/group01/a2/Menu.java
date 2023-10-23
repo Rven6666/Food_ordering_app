@@ -71,7 +71,7 @@ public class Menu implements AppState {
                 nextState = State.UPLOAD;
                 break;
             case 3: //Edit Scrolls (only for registered user)
-               manager.editScroll(user);
+                manager.editScroll(user);
                 break;
             case 4: // Remove Scroll (only for registered user)
                 manager.removeScroll(user);
@@ -98,7 +98,7 @@ public class Menu implements AppState {
                 userManager3.removeUser();
                 break;
             case 11:
-                System.out.println("CALL CLASS - To be done - VIEW app stats");
+                new AppStats();
                 break;
         }
      }

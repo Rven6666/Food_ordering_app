@@ -28,6 +28,7 @@ public class Login implements LogObserverable, AppState {
                 this.user = null;
                 System.out.println("Welcome, guest!");
                 notifyObserver("Guest entered the system");
+                AppStats.incrementCount("guest logins");
                 break;
             case 3:
                 System.out.println("Thanks for stopping by!");
@@ -49,6 +50,7 @@ public class Login implements LogObserverable, AppState {
             if (checkUserLogin(username, password)) {
                 System.out.println("Login successful");
                 notifyObserver("User " + username + " logged in");
+                AppStats.incrementCount("user logins");
                 return true;
             } else {
                 // seeing if they would like to attempt to try login again

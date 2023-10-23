@@ -46,8 +46,16 @@ public class FileUploader implements LogObserverable, AppState {
             repositoryDir.mkdir();
         }
 
-        File destFile = new File(REPOSITORY_PATH + sourceFile.getName());
-        
+        // create a new folder to store the file and all its versions if edited
+        final String FOLDER_PATH = REPOSITORY_PATH + sourceFile.getName();
+        File fileDir = new File(FOLDER_PATH);
+        if (!fileDir.exists()) {
+            System.out.println("Error: There is already a file with this name in the database.");
+            return;
+        }   
+        fileDir.mkdir();
+
+        File destFile = new File(FOLDER_PATH + sourceFile.getName() + "-0");
 
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {
@@ -86,6 +94,7 @@ public class FileUploader implements LogObserverable, AppState {
         scroll_info.put("filename", getFilename());
         scroll_info.put("uploader", user.getName());
         scroll_info.put("date", getDate());
+        scroll_info.put("version", 0);
 
         JSONObject scrolls = new JSONObject();
 
@@ -105,6 +114,7 @@ public class FileUploader implements LogObserverable, AppState {
             FileWriter fileWriter = new FileWriter(jsonFile);
             fileWriter.write(scrolls.toJSONString());
             fileWriter.close();
+            AppStats.incrementCount("scrolls uploaded");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package lab24.ankit.group01.a2.Scrolls;
 
 import lab24.ankit.group01.a2.AppState;
-
+import lab24.ankit.group01.a2.AppStats;
 import lab24.ankit.group01.a2.Scan;
 import lab24.ankit.group01.a2.User;
 import org.json.simple.JSONArray;
@@ -85,6 +85,7 @@ public class ScrollSeeker implements AppState {
         }
 
         // prints newline before menu selection
+        AppStats.incrementCount("scroll views");
         System.out.println();
     }
 
@@ -137,6 +138,7 @@ public class ScrollSeeker implements AppState {
                 try {
                     Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     System.out.println("Successfully downloaded the scroll. Returning back to the menu.\n");
+                    AppStats.incrementCount("scrolls downloaded");
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Failed to download the scroll.\n");

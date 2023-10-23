@@ -56,8 +56,6 @@ public class App {
                     state = update.getNextState();
                     break;
                 
-                
-
             }
         }
     }
