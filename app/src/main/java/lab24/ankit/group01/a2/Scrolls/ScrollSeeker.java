@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class ScrollSeeker implements AppState {
     private static final String SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
+    private static final String USERS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/UserList.json";
     private JSONParser parser = new JSONParser();
 
     public void viewScroll(){
@@ -30,7 +31,6 @@ public class ScrollSeeker implements AppState {
                 throw new Exception();
             }
 
-            System.out.println("Displaying scroll information");
             for(int i = 0; i < scrolls_array.size(); i++){
                 JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
 
@@ -71,8 +71,9 @@ public class ScrollSeeker implements AppState {
             JSONObject scroll_info = (JSONObject) scrolls_array.get(id-1);
             // open the file
             String filename = (String) scroll_info.get("filename");
+            String version = "-" + scroll_info.get("version");
 
-            File fileObj = new File("src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename);
+            File fileObj = new File("src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename + version);
             Scanner scanner = new Scanner(fileObj);
             if (scanner.hasNextLine()) {
                 String firstLine = scanner.nextLine();
@@ -124,12 +125,15 @@ public class ScrollSeeker implements AppState {
                 System.out.println("filename = " + filename);
                 System.out.println("file id = " + file_id);
                 System.out.println("version = " + version);
+                System.out.println();
             }
 
             System.out.print("Select a scroll to download, specify an id: ");
             int id = Scan.scanInteger(1, scrolls_array.size());
             JSONObject scroll_info = (JSONObject) scrolls_array.get(id-1);
-            String source = "src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + (String) scroll_info.get("filename");
+            String filename = (String) scroll_info.get("filename");
+            String version = "-" + scroll_info.get("version");
+            String source = "src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename + version;
 
             System.out.print("Specify path to the directory to save the scroll: ");
             String dir_path = Scan.scanString(null);
@@ -138,7 +142,7 @@ public class ScrollSeeker implements AppState {
             File targetDirectory = new File(dir_path);
 
             if (sourceFile.exists() && sourceFile.isFile() && targetDirectory.isDirectory()) {
-                File targetFile = new File(targetDirectory, sourceFile.getName());
+                File targetFile = new File(targetDirectory, filename);
 
                 try {
                     Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -164,6 +168,8 @@ public class ScrollSeeker implements AppState {
         try {
             JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
             JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+            JSONObject userList = (JSONObject) parser.parse(new FileReader(USERS_PATH));
+            JSONArray users = (JSONArray) userList.get("users");
 
             if (scrolls_array.isEmpty()) {
                 // throw new exception & return to menu
@@ -171,35 +177,45 @@ public class ScrollSeeker implements AppState {
             }
 
             System.out.println("\nSearch Filters Menu:");
-            System.out.println("1. Search by Uploader name");
+            System.out.println("1. Search by Uploader ID");
             System.out.println("2. Search by Scroll ID");
             System.out.println("3. Search by Name");
             System.out.println("4. Search by Upload Date");
-            System.out.println("5. Back to Main Menu\n");
+            System.out.println("5. Search by version");
+            System.out.println("6. Back to Main Menu\n");
 
-            int choice = Scan.scanInteger(1, 5);
+            int choice = Scan.scanInteger(1, 6);
             switch (choice) {
                 case 1:
-                    System.out.print("Enter Uploader: ");
-                    String uploader = Scan.scanString(null);
-                    searchAndDisplayFilteredScrolls(scrolls_array, "uploader", uploader);
+                    System.out.print("Enter Uploader ID: ");
+                    String uploader_id = Integer.toString(Scan.scanInteger(1, users.size()));
+                    System.out.println();
+                    searchAndDisplayFilteredScrolls(scrolls_array, "uploader_id", uploader_id);
                     break;
                 case 2:
                     System.out.print("Enter Scroll ID: ");
-                    int scrollId = Scan.scanInteger(1, scrolls_array.size());
-                    searchAndDisplayFilteredScrolls(scrolls_array, "id", scrollId);
+                    String scrollId = Integer.toString(Scan.scanInteger(1, scrolls_array.size()));
+                    System.out.println();
+                    searchAndDisplayFilteredScrolls(scrolls_array, "file_id", scrollId);
                     break;
                 case 3:
                     System.out.print("Enter Scroll Name: ");
                     String name = Scan.scanString(null);
+                    System.out.println();
                     searchAndDisplayFilteredScrolls(scrolls_array, "filename", name);
                     break;
                 case 4:
                     System.out.print("Enter Upload Date (yyyy-MM-dd): ");
                     String uploadDate = Scan.scanString(null);
+                    System.out.println();
                     searchAndDisplayFilteredScrolls(scrolls_array, "date", uploadDate);
                     break;
                 case 5:
+                    System.out.print("Search by version: ");
+                    Long version = Long.valueOf(Scan.scanInteger(0, Integer.MAX_VALUE));
+                    System.out.println();
+                    searchAndDisplayFilteredScrolls(scrolls_array, "version", version);
+                case 6:
                     System.out.println("Returning to the main menu.\n");
                     break;
             }
@@ -221,10 +237,11 @@ public class ScrollSeeker implements AppState {
         } else {
             System.out.println("Matching Scrolls:");
             for (JSONObject scroll : filteredScrolls) {
-                System.out.println("id = " + scroll.get("id"));
-                System.out.println("uploader = " + scroll.get("uploader"));
-                System.out.println("upload_date = " + scroll.get("date"));
-                System.out.println("filename = " + scroll.get("filename") + "\n");
+                System.out.println("date = " + scroll.get("date"));
+                System.out.println("uploader id = " + scroll.get("uploader_id"));
+                System.out.println("filename = " + scroll.get("filename"));
+                System.out.println("file id = " + scroll.get("file_id"));
+                System.out.println("version = " + scroll.get("version") + "\n");
             }
         }
         System.out.println("Returning to the search filters menu.\n");

@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
-
 import org.checkerframework.checker.units.qual.A;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -47,13 +46,13 @@ public class FileUploader implements LogObserverable, AppState {
         // create a new folder to store the file and all its versions if edited
         final String FOLDER_PATH = REPOSITORY_PATH + sourceFile.getName();
         File fileDir = new File(FOLDER_PATH);
-//        if (!fileDir.exists()) {
-//            System.out.println("Error: There is already a file with this name in the database.");
-//            return; I am going to comment this out cuz wtf is going on here?
-//        }
+        if (fileDir.exists()) {
+            System.out.println("Error: There is already a file with this name in the database.");
+            return;
+        }
         fileDir.mkdir();
 
-        File destFile = new File(FOLDER_PATH + sourceFile.getName() + "-0");
+        File destFile = new File(FOLDER_PATH + "-0");
 
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {
@@ -98,7 +97,7 @@ public class FileUploader implements LogObserverable, AppState {
         try {
             scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
             int file_id = ((JSONArray)scrolls.get("scrolls")).size() + 1;
-            scroll_info.put("file_id", file_id);
+            scroll_info.put("file_id", Integer.toString(file_id));
 
             ((JSONArray)scrolls.get("scrolls")).add(scroll_info);
         } catch (Exception e){
