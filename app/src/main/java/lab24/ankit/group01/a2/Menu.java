@@ -5,7 +5,6 @@ import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
 
 public class Menu implements AppState {
 
-    private final LogObserver logObserver = new SystemLog();
     private final User user;
     private final String name;
     
@@ -42,14 +41,14 @@ public class Menu implements AppState {
             if (selection == 2) exit();
         } else if(!user.isAdmin()){
             // getting choice from user
-            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scrolls\n4. Remove Scrolls\n" +
-                            "5. Receive Scrolls\n6. Search Scrolls\n7. Update Profile Details\n8. Exit");
+            System.out.println("1. View Scrolls\n2. Upload scrolls\n3. Edit Scrolls\n4. Remove Scrolls\n" +
+                            "5. Download Scrolls\n6. Search Scrolls\n7. Update Profile Details\n8. Exit");
             selection = Scan.scanInteger(1, 8);
             if (selection == 8) exit();
         } else {
             // getting choice from admin
-            System.out.println("1. View Scrolls\n2. Add Scrolls\n3. Edit Scroll\n4. Remove Scroll\n"
-                            +"5. Receive Scrolls\n6. Search Scrolls\n7. Update Profile Details\n"
+            System.out.println("1. View Scrolls\n2. Upload scrolls\n3. Edit Scrolls\n4. Remove Scrolls\n"
+                            +"5. Download Scrolls\n6. Search Scrolls\n7. Update Profile Details\n"
                             +"8. Create New Users\n9. View Users\n10. Delete Users\n"
                             +"11. View app stats\n12. Exit");
             selection = Scan.scanInteger(1, 12);
