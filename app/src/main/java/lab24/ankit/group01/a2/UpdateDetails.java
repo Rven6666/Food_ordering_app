@@ -23,7 +23,7 @@ public class UpdateDetails implements AppState, LogObserverable {
 
     public String getDetailToUpdate() {
         // list of all the choices
-        String[] choices = {"Username", "Email", "Password", "Address", "Phone Number", "Name"};
+        String[] choices = {"Username", "Email", "Password", "Address", "Phone Number", "Name", "User ID"};
         
         // getting user choice
         System.out.println("What detail would you like to update?");
@@ -38,8 +38,26 @@ public class UpdateDetails implements AppState, LogObserverable {
     }
 
     public String getNewValue(String detail) {
-        System.out.println("Please enter a new " + detail + ": ");
-        String newValue = Scan.scanString(null);
+        
+        String newValue = null;
+
+        // check case for user id because this has to be unique
+        if (detail.equals("user id")) {
+            System.out.println("Please enter a new " + detail + " between 0 and 100,000: ");
+            int newID = Scan.scanInteger(0, 100000);
+            while (true) {
+                if (UserManager.checkUserIDAvailable(newID)) break;
+                System.out.println("ID already taken, please choose another one.");
+                newID = Scan.scanInteger(0, 100000);
+            }
+            newValue = Integer.toString(newID);
+        }
+        else {
+            System.out.println("Please enter a new " + detail + ": ");
+            newValue = Scan.scanString(null);
+        }
+
+        // confirming the new value
         System.out.println("You entered: " + newValue + "\nPlease confirm if this is correct? (y/n)");
         String response = Scan.scanString(new ArrayList<String>(Arrays.asList("y", "n")));
         if (response.equals("n")) {

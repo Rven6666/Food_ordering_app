@@ -22,40 +22,103 @@ public class ScrollSeeker implements AppState {
 
     public void viewScroll(){
 
+        JSONArray scrolls_array = null;
+
         try {
             JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
-            JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+            scrolls_array = (JSONArray) scrolls.get("scrolls");
 
             if (scrolls_array.isEmpty()){
                 // throw new exception & return to menu
                 throw new Exception();
             }
-
-            for(int i = 0; i < scrolls_array.size(); i++){
-                JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-
-                String date = (String) scroll_info.get("date");
-                String uploader_id = (String) scroll_info.get("uploader_id");
-                String filename = (String) scroll_info.get("filename");
-                String file_id = (String) scroll_info.get("file_id");
-                Long version = (Long) scroll_info.get("version");
-
-                System.out.println("date = " + date);
-                System.out.println("uploader id = " + uploader_id);
-                System.out.println("filename = " + filename);
-                System.out.println("file id = " + file_id);
-                System.out.println("version = " + version);
-                System.out.println();
-            }
-
         } catch (Exception e){
             // file is empty, return to menu
             System.out.println("No Scrolls to view. Returning to menu.");
             return;
         }
+
+        for(int i = 0; i < scrolls_array.size(); i++){
+            JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
+
+            String date = (String) scroll_info.get("date");
+            String uploader_id = (String) scroll_info.get("uploader_id");
+            String filename = (String) scroll_info.get("filename");
+            String file_id = (String) scroll_info.get("file_id");
+            Long version = (Long) scroll_info.get("version");
+
+            System.out.println("date = " + date);
+            System.out.println("uploader id = " + uploader_id);
+            System.out.println("filename = " + filename);
+            System.out.println("file id = " + file_id);
+            System.out.println("version = " + version);
+            System.out.println();
+        }
+
+        System.out.println("1. Preview a scroll\n2. Download a scroll\n3. See scroll history\n.4. Back to main menu\n");
+        int choice = Scan.scanInteger(1, 4);
+        switch (choice){
+            case 1:
+                previewScroll();
+                break;
+            case 2:
+                downloadScroll(null);
+                break;
+            case 3:
+                scrollHistory();
+                break;
+            case 4:
+                break;
+        }
+
+    }
+
+    public void scrollHistory() {
+
+    }
+
+    public boolean checkScrollIdExists(String id) {
+        
+        JSONArray scrolls_array = null;
+        
+        try {
+            JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
+            scrolls_array = (JSONArray) scrolls.get("scrolls");
+
+            if (scrolls_array.isEmpty()){
+                // throw an exception & return to menu
+                throw new Exception();
+            }
+
+        } catch (Exception e){
+            // file is empty, return to menu
+            System.out.println("No Scrolls to preview. Returning to menu.\n");
+            return false;
+        }
+
+        for (int i = 0; i < scrolls_array.size(); i++) {
+            JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
+            String scroll_id = (String) scroll_info.get("scroll id");
+            if (scroll_id.equals(id)) {
+                return true;
+            }
+        }
+        System.out.println("Scroll ID does not exist. Please try again.");
+        return false;
+
     }
 
     public void previewScroll(){
+
+        String scroll_id = null;
+
+        while (true) {
+            System.out.println("Please enter the id of the scroll you want to preview: ");
+            scroll_id = Scan.scanString(null);
+            if (scroll_id.equals("exit")) return;
+            if (checkScrollIdExists(scroll_id)) break;
+            System.out.println("Scroll with that id does not exist, please try again, or type 'exit' to return to the menu.");
+        }
 
         try {
             JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));

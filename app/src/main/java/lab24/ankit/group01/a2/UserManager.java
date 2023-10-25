@@ -49,10 +49,20 @@ public class UserManager implements LogObserverable {
         // choose user privilege/type
         System.out.print("Please choose privilege (admin/member): ");
         String privilege = Scan.scanString(new ArrayList<String>(Arrays.asList("admin", "member")));
+        
+        // choose user id
+        int id = 0;
+        while (true) {
+            System.out.print("Please choose an ID between 0 and 100,000: ");
+            id = Scan.scanInteger(0, 100000);
+            if (checkUserIDAvailable(id)) break;
+            System.out.println("ID already taken, please choose another one.");
+        }
 
         // create new user json object
         JSONObject user = new JSONObject();
         user.put("id", getNextID());
+        user.put("user id", Integer.toString(id));
         user.put("name", full_name);
         user.put("email", email);
         user.put("phone number", phone_number);
@@ -85,6 +95,25 @@ public class UserManager implements LogObserverable {
         System.out.println("Successfully created new user!");
         notifyObserver("New user created with id " + user.get("id"));
 
+    }
+
+    public static boolean checkUserIDAvailable(int id) {
+        JSONObject obj = null;
+
+        try {
+            // getting current jsonobject in file
+            obj = (JSONObject) parser.parse(new FileReader(filePath));
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        for (Object user : (JSONArray) obj.get("users")){
+            JSONObject userObject = (JSONObject) user;
+            if (Integer.parseInt(userObject.get("id").toString()) == id)
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -239,7 +268,7 @@ public class UserManager implements LogObserverable {
      * get user list from the UserList database
      * @return, a JSONArray containing user information
      */
-    public JSONArray getUserList(){
+    public static JSONArray getUserList(){
         JSONArray users = null;
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
@@ -249,6 +278,16 @@ public class UserManager implements LogObserverable {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public static HashMap<String, String> getIDToUserIDMap() {
+        HashMap<String, String> map = new HashMap<>();
+        JSONArray users = getUserList();
+        for (Object user : users) {
+            JSONObject userObject = (JSONObject) user;
+            map.put(userObject.get("id").toString(), userObject.get("user id").toString());
+        }
+        return map;
     }
 
     public HashMap<Integer, Object> getUsers() {
