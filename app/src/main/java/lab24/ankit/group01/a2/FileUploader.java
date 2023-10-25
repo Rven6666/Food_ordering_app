@@ -44,15 +44,15 @@ public class FileUploader implements LogObserverable, AppState {
         }
 
         // create a new folder to store the file and all its versions if edited
-        final String FOLDER_PATH = REPOSITORY_PATH + sourceFile.getName();
-        File fileDir = new File(FOLDER_PATH);
+        String folder_path = REPOSITORY_PATH + sourceFile.getName();
+        File fileDir = new File(folder_path);
         if (fileDir.exists()) {
             System.out.println("Error: There is already a file with this name in the database.");
             return;
         }
         fileDir.mkdir();
 
-        File destFile = new File(FOLDER_PATH + "-0");
+        File destFile = new File(folder_path + "/" + sourceFile.getName() + "-0");
 
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {

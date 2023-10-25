@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ScrollManager{
+    
     private static final String SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
     private static final String UPLOADED_SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/";
     private JSONParser parser = new JSONParser();
