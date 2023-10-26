@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 public class User {
 
     private final String id;
+    private final String user_id;
     private final String name;
     private final String phoneNum;
     private final String email;
@@ -21,6 +22,11 @@ public class User {
         this.username = user.get("username").toString();
         this.encryptedPassword = user.get("password").toString();
         this.type = user.get("type").toString();
+        this.user_id = user.get("user id").toString();
+    }
+
+    public String getUserID() {
+        return this.user_id;
     }
 
     public boolean isAdmin() {

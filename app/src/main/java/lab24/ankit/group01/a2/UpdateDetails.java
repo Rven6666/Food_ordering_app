@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import lab24.ankit.group01.a2.Scrolls.ScrollManager;
+
 public class UpdateDetails implements AppState, LogObserverable {
 
     private User user;
@@ -88,6 +90,10 @@ public class UpdateDetails implements AppState, LogObserverable {
                     jsonOb.put(detail, PassEncrypt.hashPassword(newValue));
                 else
                     jsonOb.put(detail, newValue);
+
+                if (detail.equals("user id")) {
+                    ScrollManager.updateUserScrollIDs(this.user.getID(), newValue);
+                }
                 
                 notifyObserver("User with id " + this.user.getID() + " updated their " + detail);
 

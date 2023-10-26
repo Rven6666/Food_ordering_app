@@ -42,7 +42,7 @@ public class App {
 
                 case VIEWSCROLL:
                     ScrollSeeker seeker = new ScrollSeeker();
-                    seeker.viewScroll();
+                    seeker.viewScroll(user);
                     state = seeker.getNextState();
                     break;
                 

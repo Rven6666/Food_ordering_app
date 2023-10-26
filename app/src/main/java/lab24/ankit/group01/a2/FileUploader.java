@@ -3,13 +3,15 @@ package lab24.ankit.group01.a2;
 import java.io.*;
 import java.time.LocalDate;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
+
 public class FileUploader implements LogObserverable, AppState {
     private static final String REPOSITORY_PATH = "./src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/";
+    private final String SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
     private final LogObserver logObserver = new SystemLog();
     private final User user;
     private String filename;
@@ -23,7 +25,7 @@ public class FileUploader implements LogObserverable, AppState {
         File sourceFile = null;
 
         while (sourceFile == null) {
-            System.out.print("Enter the path to the file you want to upload: ");
+            System.out.print("\nEnter the path to the file you want to upload: ");
             String filePath = Scan.scanString(null);
             sourceFile = new File(filePath);
             if (!sourceFile.exists()) {
@@ -43,15 +45,12 @@ public class FileUploader implements LogObserverable, AppState {
         }
 
         // create a new folder to store the file and all its versions if edited
-        String folder_path = REPOSITORY_PATH + sourceFile.getName();
+        String scroll_id = getNextScrollID();
+        String folder_path = REPOSITORY_PATH + scroll_id + "/";
         File fileDir = new File(folder_path);
-        if (fileDir.exists()) {
-            System.out.println("Error: There is already a file with this name in the database.");
-            return;
-        }
         fileDir.mkdir();
 
-        File destFile = new File(folder_path + "/" + sourceFile.getName() + "-0");
+        File destFile = new File(folder_path + sourceFile.getName() + "-0");
 
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {
@@ -74,6 +73,21 @@ public class FileUploader implements LogObserverable, AppState {
 
     }
 
+    public String getNextScrollID() {
+
+        JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
+
+        int max = 0;
+        for (Object obj : scrollsArray){
+            JSONObject scroll = (JSONObject) obj;
+            int id = Integer.parseInt(scroll.get("scroll id").toString());
+            if (id > max)
+                max = id;
+        }
+
+        return Integer.toString(max + 1);
+    }
+
     public void updateScrolls() {
         // record the uploaded file information
         String path = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
@@ -85,28 +99,28 @@ public class FileUploader implements LogObserverable, AppState {
             return;
         }
 
+        JSONArray versions = new JSONArray();
+        JSONObject first_version = new JSONObject();
+        first_version.put("version", "0");
+        first_version.put("date", getDate());
+        first_version.put("filename", getFilename());
+        versions.add(first_version);
+
         JSONObject scroll_info = new JSONObject();
         scroll_info.put("filename", getFilename());
-        scroll_info.put("uploader_id", user.getID());
+        scroll_info.put("scroll id", getNextScrollID());
+        scroll_info.put("uploader id", user.getUserID());
+        scroll_info.put("uploader real id", user.getID());
         scroll_info.put("date", getDate());
-        scroll_info.put("version", 0);
+        scroll_info.put("version", "0");
+        scroll_info.put("downloads", "0");
+        scroll_info.put("versions", versions);
 
         JSONObject scrolls = new JSONObject();
+        JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
 
-        try {
-            scrolls = (JSONObject) new JSONParser().parse(new FileReader(path));
-            int file_id = ((JSONArray)scrolls.get("scrolls")).size() + 1;
-            scroll_info.put("file_id", Integer.toString(file_id));
-
-            ((JSONArray)scrolls.get("scrolls")).add(scroll_info);
-        } catch (Exception e){
-            // we write to the scroll_array scroll_info
-            // as the current scroll database are empty
-            JSONArray scroll_array = new JSONArray();
-            scroll_info.put("file_id", "1");
-            scroll_array.add(scroll_info);
-            scrolls.put("scrolls", scroll_array);
-        }
+        scrollsArray.add(scroll_info);
+        scrolls.put("scrolls", scrollsArray);
 
         // write to the json file
         try {

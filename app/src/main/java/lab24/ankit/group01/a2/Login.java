@@ -16,8 +16,8 @@ public class Login implements LogObserverable, AppState {
 
     public void displayLoginScreen() {
         System.out.println("Welcome to the Scroll Management System");
+        System.out.println("Please select an option: ");
         System.out.println("1. Login\n2. Continue as Guest\n3. Exit");
-        System.out.println("Please select an option");
         int choice = Scan.scanInteger(1, 4);
         switch (choice) {
             case 1:
@@ -74,7 +74,7 @@ public class Login implements LogObserverable, AppState {
             e.printStackTrace();
             System.exit(1);
         }
-        try{
+
         JSONArray users = (JSONArray) userFile.get("users");
 
         for (Object user : users) {
@@ -84,9 +84,6 @@ public class Login implements LogObserverable, AppState {
                 this.user = new User(userObject);
                 return true;
             }
-        }
-        }catch(Exception e){
-            System.out.println(e);
         }
 
         return false;

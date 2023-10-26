@@ -1,5 +1,6 @@
 package lab24.ankit.group01.a2.Scrolls;
 
+import lab24.ankit.group01.a2.AppStats;
 import lab24.ankit.group01.a2.Scan;
 import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
 import lab24.ankit.group01.a2.User;
@@ -12,6 +13,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.time.LocalDate;
+
 public class ScrollManager{
     
     private static final String SCROLLS_PATH = "src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json";
@@ -20,170 +23,193 @@ public class ScrollManager{
 
     public void editScroll(User user){
         /* edit the scroll based on the supplied id */
-        try {
-            // read the scroll json file from the database
-            JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
-            JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+        JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
 
-            if (scrolls_array.size() == 0) {
-                // return to the caller function
-                System.out.println("No scroll to display and edit. Returning to menu.\n");
-                return;
+        System.out.println("\nDisplaying your scrolls: ");
+        int count = 0;
+
+        for (Object obj : scrollsArray) {
+            JSONObject scrollInfo = (JSONObject) obj;
+            if (scrollInfo.get("uploader real id").equals(user.getID())) {
+                System.out.println("Scroll ID: " + scrollInfo.get("scroll id"));
+                System.out.println("Scroll Date: " + scrollInfo.get("date"));
+                System.out.println("Scroll Name: " + scrollInfo.get("filename"));
+                System.out.println("Scroll Version: " + scrollInfo.get("version"));
+                System.out.println("Scroll Downloads: " + scrollInfo.get("downloads"));
+                System.out.println();
+                count++;
             }
-
-            System.out.println("Displaying scroll information");
-            for(int i = 0; i < scrolls_array.size(); i++){
-                JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-
-                String date = (String) scroll_info.get("date");
-                String uploader_id = (String) scroll_info.get("uploader_id");
-                String filename = (String) scroll_info.get("filename");
-                String file_id = (String) scroll_info.get("file_id");
-                Long version = (Long) scroll_info.get("version");
-
-                if (uploader_id.equals(user.getID())){
-                    // show scroll corresponding to the ones
-                    // only uploaded by the user
-                    System.out.println("date = " + date);
-                    System.out.println("uploader id = " + uploader_id);
-                    System.out.println("filename = " + filename);
-                    System.out.println("file id = " + file_id);
-                    System.out.println("version = " + version);
-                }
-            }
-
-            // select the scroll to update
-            System.out.print("Please select the id of the scroll to update: ");
-            int idx = Scan.scanInteger(1, scrolls_array.size()) - 1;
-            JSONObject scroll_info = (JSONObject) scrolls_array.get(idx);
-
-            // keep prompting user for input until it matches his/her id
-            while (!scroll_info.get("uploader_id").equals(user.getID())){
-                System.out.printf("Error, must remove scrolls correspond to your name only: %s\n",user.getName());
-                System.out.print("Please select the id of the scroll to update: ");
-                idx = Scan.scanInteger(1, scrolls_array.size()) - 1;
-                scroll_info = (JSONObject) scrolls_array.get(idx);
-            }
-
-            // convert user string input to binary representation
-            System.out.print("Please select a content to overwrite the existing contents with: ");
-            String content = Scan.scanString(null);
-            String binary_content = convertStringToBinary(content);
-
-            // write the binary representation to the file
-            String filename = (String) scroll_info.get("filename");
-            Long version = (Long) scroll_info.get("version");
-
-            // output successful edit message to user
-            if (updateAfterEditing(scrolls_array, user)){
-                System.out.printf("Content successfully updated to be: %s\n", content);
-                System.out.printf("Corresponding binary representation: %s\n\n", binary_content);
-                filename += "-" + (version + 1);
-
-                FileWriter fileObj = new FileWriter("src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + filename);
-                fileObj.write(binary_content);
-                fileObj.close();
-            } else{
-                throw new Exception();
-            }
-
-        } catch (Exception e){
-            System.out.println("No scroll to display and edit. Returning to menu.\n");
         }
+
+        if (count == 0) {
+            System.out.println("You have no scrolls to edit. Returning to menu.\n");
+            return;
+        }
+
+        JSONObject scroll = null;
+
+        while (true) {
+            System.out.print("Please enter the id of the scroll you would like to edit: ");
+            String scrollID = Scan.scanString(null);
+            if (scrollID.equals("exit")) return;
+            scroll = ScrollSeeker.getScroll(scrollID);
+            if(scroll == null || !scroll.get("uploader real id").equals(user.getID())) {
+                System.out.println("Invalid scroll ID, please enter another or type 'exit' to return to the main menu.");
+                scroll = null;
+                continue;
+            }
+            break;
+        }
+
+        // convert user string input to binary representation
+        System.out.print("Please enter content to overwrite the existing contents with: ");
+        String content = Scan.scanString(null);
+        String binary_content = convertStringToBinary(content);
+
+        // write the binary representation to the file
+        String filename = (String) scroll.get("filename");
+        String nextVersion = getNextVersion(scroll);
+        filename += "-" + nextVersion;
+
+        // write new file to the folder
+        String path = UPLOADED_SCROLLS_PATH + scroll.get("scroll id") + "/" + filename;
+        try {
+            FileWriter fileObj = new FileWriter(path);
+            fileObj.write(binary_content);
+            fileObj.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file. Returning to menu.\n");
+            return;
+        }
+
+        // update database
+        scroll.put("version", nextVersion);
+        scroll.put("date", LocalDate.now().toString());
+
+
+        // update versions array
+        JSONArray versions = (JSONArray) scroll.get("versions");
+        JSONObject new_version = new JSONObject();
+        new_version.put("date", scroll.get("date"));
+        new_version.put("filename", filename);
+        new_version.put("version", nextVersion);
+        versions.add(new_version);
+        scroll.put("versions", versions);
+
+        // remove previous scroll info then add new
+        for (Object obj : scrollsArray) {
+            JSONObject scrollInfo = (JSONObject) obj;
+            if (scrollInfo.get("scroll id").equals(scroll.get("scroll id"))) {
+                scrollsArray.remove(scrollInfo);
+                break;
+            }
+        }
+        scrollsArray.add(scroll);
+
+        File jsonFile = new File("src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json");
+
+        JSONObject scrolls = new JSONObject();
+        scrolls.put("scrolls", scrollsArray);
+
+        // write to the json file
+        try {
+            FileWriter fileWriter = new FileWriter(jsonFile);
+            fileWriter.write(scrolls.toJSONString());
+            fileWriter.close();
+            AppStats.incrementCount("scrolls uploaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating scrolls database");
+            System.exit(1);
+        }
+
+        System.out.println("Successfully wrote new contents to file!");
+
+    }
+
+    public String getNextVersion(JSONObject scroll) {
+        /* get the next version of the scroll */
+        String currentVersion = (String) scroll.get("version");
+        int nextVersion = Integer.parseInt(currentVersion) + 1;
+        return Integer.toString(nextVersion);
     }
 
     public void removeScroll(User user){
         /* remove scroll based on the supplied id */
-        // early user exit if user is null
-        if (user == null){
-            System.out.println("We are sorry. Only registered user are eligible to remove a scroll.");
-            System.out.println("Returning you to the main menu.\n");
+
+        JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
+
+        System.out.println("Displaying your scrolls: ");
+        int count = 0;
+
+        for (Object obj : scrollsArray) {
+            JSONObject scrollInfo = (JSONObject) obj;
+            if (scrollInfo.get("uploader real id").equals(user.getID())) {
+                System.out.println("Scroll ID: " + scrollInfo.get("scroll id"));
+                System.out.println("Scroll Name: " + scrollInfo.get("filename"));
+                System.out.println("Scroll Version: " + scrollInfo.get("version"));
+                System.out.println("Scroll Date: " + scrollInfo.get("date"));
+                System.out.println("Scroll Downloads: " + scrollInfo.get("downloads"));
+                System.out.println();
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("You have no scrolls to remove. Returning to menu.\n");
             return;
         }
 
-        try {
-            // read the scroll json file from the database
-            JSONObject scrolls = (JSONObject) parser.parse(new FileReader(SCROLLS_PATH));
-            JSONArray scrolls_array = (JSONArray) scrolls.get("scrolls");
+        JSONObject scroll = null;
 
-            if (scrolls_array.size() == 0) {
-                // return to the caller function
-                System.out.println("No scroll to display and remove. Returning to menu.\n");
-                return;
+        while (true) {
+            System.out.print("Please enter the id of the scroll you would like to remove: ");
+            String scrollID = Scan.scanString(null);
+            if (scrollID.equals("exit")) return;
+            scroll = ScrollSeeker.getScroll(scrollID);
+            if(scroll == null || !scroll.get("uploader real id").equals(user.getID())) {
+                System.out.println("Invalid scroll ID, please enter another or type 'exit' to return to the main menu.");
+                scroll = null;
+                continue;
             }
-
-            System.out.println("Displaying scroll information");
-            for(int i = 0; i < scrolls_array.size(); i++){
-                JSONObject scroll_info = (JSONObject) scrolls_array.get(i);
-
-                String date = (String) scroll_info.get("date");
-                String uploader_id = (String) scroll_info.get("uploader_id");
-                String filename = (String) scroll_info.get("filename");
-                String file_id = (String) scroll_info.get("file_id");
-                Long version = (Long) scroll_info.get("version");
-
-                if (uploader_id.equals(user.getID())){
-                    // show scroll corresponding to the ones
-                    // only uploaded by the user
-                    System.out.println("date = " + date);
-                    System.out.println("uploader id = " + uploader_id);
-                    System.out.println("filename = " + filename);
-                    System.out.println("file id = " + file_id);
-                    System.out.println("version = " + version);
-                    System.out.println();
-                }
-            }
-
-            // select the scroll to remove
-            System.out.print("Please select the id of the scroll to remove: ");
-            int idx = Scan.scanInteger(1, scrolls_array.size()) - 1;
-            JSONObject scroll_info = (JSONObject) scrolls_array.get(idx);
-
-            // keep prompting user for input until it matches his/her id
-            while (!scroll_info.get("uploader_id").equals(user.getID())){
-                System.out.printf("Error, must remove scrolls correspond to your name only: %s\n",user.getName());
-                System.out.print("Please select the id of the scroll to remove: ");
-                idx = Scan.scanInteger(1, scrolls_array.size()) - 1;
-                scroll_info = (JSONObject) scrolls_array.get(idx);
-            }
-
-            Long version = (Long) scroll_info.get("version");
-//            System.out.printf("Please select a version to delete, currently there are %d of them.\n",version+1);
-//            System.out.printf("Specify a version (0-%d): ",version);
-//            int version_to_delete = Scan.scanInteger(0, version.intValue()); (not needed)
-
-            // remove all version of digital scroll
-            for(int version_to_delete = 0; version_to_delete < version+1; version_to_delete++){
-                File file = new File(UPLOADED_SCROLLS_PATH + scroll_info.get("filename") + "-" + version_to_delete);
-                if (file.delete()){
-                    System.out.print(scroll_info.get("filename") + " v." + version_to_delete + " Successfully deleted\n");
-                }
-                // display error message when failing to remove digital scroll
-                else {
-                    System.out.println("Failed. Returning back to the main menu.\n");
-                }
-                System.out.println("All file version Successfully deleted\n");
-            }
-
-            // delete directory
-            File file = new File(UPLOADED_SCROLLS_PATH + scroll_info.get("filename"));
-            if (file.delete()){
-                System.out.println("Successfully removed the directory.\n");
-            }
-
-            // remove the scroll_info from the scrolls_array
-            scrolls_array.remove(scroll_info);
-
-            // update the scrolls.json file here
-            if (updateAfterRemove(scrolls_array)){
-                System.out.println("Successfully updated the Scrolls database.\n");
-            } else {
-                System.out.println("Scrolls database not found. please check the directory folder/source file.\n");
-            }
-
-        } catch (Exception e){
-            System.out.println("No scroll to display and remove. Returning to menu.\n");
+            break;
         }
+
+        // delete directory
+        File dir = new File(UPLOADED_SCROLLS_PATH + scroll.get("scroll id"));
+
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
+
+        dir.delete();
+
+        // delete from scrolls database
+        scrollsArray.remove(scroll);
+
+        // update scrolls array
+        JSONObject scrolls = new JSONObject();
+        scrolls.put("scrolls", scrollsArray);
+
+        File jsonFile = new File("src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json");
+
+        // write to the json file
+        try {
+            FileWriter fileWriter = new FileWriter(jsonFile);
+            fileWriter.write(scrolls.toJSONString());
+            fileWriter.close();
+            AppStats.incrementCount("scrolls uploaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating scrolls database");
+            System.exit(1);
+        }
+
+        System.out.println("Successfully removed scroll!");
     }
 
     public static String convertStringToBinary(String input) {
@@ -197,6 +223,40 @@ public class ScrollManager{
             );
         }
         return result.toString();
+    }
+
+    public static void updateUserScrollIDs(String id, String newUploaderID) {
+        
+        JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
+
+        for (int i = 0; i < scrollsArray.size(); i++) {
+            JSONObject scrollInfo = (JSONObject) scrollsArray.get(i);
+            if (scrollInfo.get("uploader real id").equals(id)) {
+                scrollInfo.put("uploader id", newUploaderID);
+                scrollsArray.remove(i);
+                scrollsArray.add(scrollInfo);
+                break;
+            }
+        }
+
+        JSONObject scrolls = new JSONObject();
+
+        scrolls.put("scrolls", scrollsArray);
+
+        File jsonFile = new File("src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json");
+
+        // write to the json file
+        try {
+            FileWriter fileWriter = new FileWriter(jsonFile);
+            fileWriter.write(scrolls.toJSONString());
+            fileWriter.close();
+            AppStats.incrementCount("scrolls uploaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating scrolls database");
+            System.exit(1);
+        }
+
     }
 
     public static boolean updateAfterEditing(JSONArray scrolls_array, User user){

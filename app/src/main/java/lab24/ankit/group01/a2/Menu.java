@@ -7,6 +7,7 @@ public class Menu implements AppState {
 
     private final User user;
     private final String name;
+    private final String type;
     
     private State nextState;
     private final ScrollManager manager = new ScrollManager();
@@ -14,14 +15,21 @@ public class Menu implements AppState {
 
     public Menu(User user) {
         this.user = user;
-        if (user != null)
+        if (user != null) {
             this.name = user.getUsername();
-        else
+            if (user.isAdmin())
+                this.type = "admin";
+            else
+                this.type = "member";
+        }
+        else {
             this.name = "Guest";
+            this.type = "";
+        }
     }
 
     public void menuIntro(){
-        System.out.println("Hello "+ name +". I am VSAS, the Virtual Scroll Access System.\n"
+        System.out.println("\nHello " + type + " " + name + ". I am VSAS, the Virtual Scroll Access System.\n"
                             +"The portal to the realm of digital wisdom!\n"
                             +"I await your selection:");
     }
@@ -69,14 +77,15 @@ public class Menu implements AppState {
             case 2: // Add scrolls (only for registered user)
                 nextState = State.UPLOAD;
                 break;
-            case 3: //Edit Scrolls (only for registered user)
+            case 3: // Edit Scrolls (only for registered user)
                 manager.editScroll(user);
                 break;
             case 4: // Remove Scroll (only for registered user)
                 manager.removeScroll(user);
                 break;
             case 5: //receive Scrolls (download)
-                seeker.downloadScroll(user);
+                seeker.displayAllScrolls(user);
+                seeker.downloadScroll();
                 break;
             case 6://Search Scrolls
                 seeker.searchFilter();
