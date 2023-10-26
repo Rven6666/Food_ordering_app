@@ -18,9 +18,9 @@ public class Menu implements AppState {
         if (user != null) {
             this.name = user.getUsername();
             if (user.isAdmin())
-                this.type = "admin";
+                this.type = "admin ";
             else
-                this.type = "member";
+                this.type = "member ";
         }
         else {
             this.name = "Guest";
@@ -29,7 +29,7 @@ public class Menu implements AppState {
     }
 
     public void menuIntro(){
-        System.out.println("\nHello " + type + " " + name + ". I am VSAS, the Virtual Scroll Access System.\n"
+        System.out.println("\nHello " + type + name + ". I am VSAS, the Virtual Scroll Access System.\n"
                             +"The portal to the realm of digital wisdom!\n"
                             +"I await your selection:");
     }

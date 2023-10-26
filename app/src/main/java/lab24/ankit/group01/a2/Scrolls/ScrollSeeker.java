@@ -53,7 +53,7 @@ public class ScrollSeeker implements AppState {
         // guests can only preview a scroll
         if(user == null){
             // guest user
-            System.out.println("1. Preview a scroll\n2. Back to main menu\n");
+            System.out.println("1. Preview a scroll\n2. Back to main menu");
             int choice = Scan.scanInteger(1, 2);
             switch (choice){
                 case 1:

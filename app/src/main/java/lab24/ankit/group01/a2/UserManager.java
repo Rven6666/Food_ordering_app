@@ -21,6 +21,8 @@ public class UserManager implements LogObserverable {
 
         File file = new File(filePath);
 
+        System.out.println();
+
         if (!file.exists()){
             // File does not exist, not considered empty
             System.out.println("File does not exist.");
@@ -242,7 +244,8 @@ public class UserManager implements LogObserverable {
             for(int i = 0; i < users.size(); i++){
                 JSONObject user = (JSONObject) users.get(i);
                 displayUserInfo(user);
-                System.out.println();
+                if (i != users.size()-1)
+                    System.out.println();
             }
         }
         catch (Exception e){

@@ -28,7 +28,7 @@ public class UpdateDetails implements AppState, LogObserverable {
         String[] choices = {"Username", "Email", "Password", "Address", "Phone Number", "Name", "User ID"};
         
         // getting user choice
-        System.out.println("What detail would you like to update?");
+        System.out.println("\nWhat detail would you like to update?");
         for (int i = 0; i < choices.length; i++) {
             System.out.println((i + 1) + ". " + choices[i]);
         }
