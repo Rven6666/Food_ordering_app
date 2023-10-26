@@ -36,7 +36,9 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     // to encrypt for password
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.2'
-
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.9'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.9'
 
 }
 
