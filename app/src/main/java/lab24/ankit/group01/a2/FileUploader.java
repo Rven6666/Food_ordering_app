@@ -1,11 +1,6 @@
 package lab24.ankit.group01.a2;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 
 import org.checkerframework.checker.units.qual.A;
@@ -34,6 +29,10 @@ public class FileUploader implements LogObserverable, AppState {
             if (!sourceFile.exists()) {
                 System.out.println("The specified file does not exist.");
                 sourceFile = null;
+            }
+            else if(!isBinaryFile(sourceFile)) {
+                System.out.println("The file is not a binary file.");
+                return;
             }
         }
        
@@ -120,6 +119,21 @@ public class FileUploader implements LogObserverable, AppState {
         }
     }
 
+    private boolean isBinaryFile(File file) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            int ch;
+            while ((ch = br.read()) != -1) {
+                if (ch != '0' && ch != '1' && ch != '\r' && ch != '\n') {
+                    // not 0, 1, not a line break
+                    return false;
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            return false;
+        }
+    }
     /**
      * return the filename of the file being uploaded
      * @return, String representation of the filename
