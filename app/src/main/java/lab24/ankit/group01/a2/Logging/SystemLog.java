@@ -1,4 +1,6 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.Logging;
+
+import lab24.ankit.group01.a2.Logging.LogObserver;
 
 import java.io.FileWriter;
 import java.io.BufferedWriter;

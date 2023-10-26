@@ -1,4 +1,4 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.Security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

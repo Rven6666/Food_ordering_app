@@ -1,4 +1,4 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.UI;
 
 import java.io.FileWriter;
 import java.io.FileReader;

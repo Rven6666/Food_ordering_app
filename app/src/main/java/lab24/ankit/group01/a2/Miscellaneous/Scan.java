@@ -1,4 +1,4 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.Miscellaneous;
 
 import java.util.Scanner;
 import java.util.List;

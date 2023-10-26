@@ -1,13 +1,12 @@
 package lab24.ankit.group01.a2.Scrolls;
 
-import lab24.ankit.group01.a2.AppState;
-import lab24.ankit.group01.a2.AppStats;
-import lab24.ankit.group01.a2.Scan;
-import lab24.ankit.group01.a2.User;
+import lab24.ankit.group01.a2.UI.AppState;
+import lab24.ankit.group01.a2.UI.AppStats;
+import lab24.ankit.group01.a2.Miscellaneous.Scan;
+import lab24.ankit.group01.a2.User.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.security.access.method.P;
 
 import java.io.*;
 import java.nio.file.Files;

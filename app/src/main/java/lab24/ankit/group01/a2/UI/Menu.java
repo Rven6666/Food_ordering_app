@@ -1,7 +1,11 @@
-package lab24.ankit.group01.a2;
+package lab24.ankit.group01.a2.UI;
 
+import lab24.ankit.group01.a2.Miscellaneous.Scan;
 import lab24.ankit.group01.a2.Scrolls.ScrollManager;
 import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
+import lab24.ankit.group01.a2.Miscellaneous.State;
+import lab24.ankit.group01.a2.User.User;
+import lab24.ankit.group01.a2.User.UserManager;
 
 public class Menu implements AppState {
 
