@@ -2,7 +2,13 @@ package lab24.ankit.group01.a2.UI;
 
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import lab24.ankit.group01.a2.Miscellaneous.Scan;
+import lab24.ankit.group01.a2.Scrolls.ScrollSeeker;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -54,7 +60,18 @@ public class AppStats {
         System.out.println("Total number of scroll views " + stats.get("scroll views"));
         System.out.println("Total number of scrolls uploaded: " + stats.get("scrolls uploaded"));
         System.out.println("Total number of scrolls downloaded: " + stats.get("scrolls downloaded"));
-        System.out.println();
+        System.out.println("Would you like to see the number of downloads for each scroll? (y/n)");
+        String input = Scan.scanString(new ArrayList<String>(Arrays.asList("y", "n")));
+        if(input.equals("y")) {
+            JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
+            for (Object obj : scrollsArray) {
+                JSONObject scroll = (JSONObject) obj;
+                String filename = (String) scroll.get("filename");
+                String scrollID = (String) scroll.get("scroll id");
+                String downloads = (String) scroll.get("downloads");
+                System.out.println(filename + " (scroll id = " + scrollID + "): " + downloads);
+            }
+        }
         
     }
 

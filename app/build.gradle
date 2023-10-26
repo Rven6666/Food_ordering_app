@@ -49,7 +49,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'lab24.ankit.group01.a2.App'
+    mainClass = 'lab24.ankit.group01.a2.UI.App'
 }
 
 test {

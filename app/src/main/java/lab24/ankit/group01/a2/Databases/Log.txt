@@ -249,3 +249,5 @@
 2023-10-27 01:18:57 [Login]: User admin logged in
 2023-10-27 01:20:54 [UserManager]: New user created with id 5
 2023-10-27 01:22:51 [UserManager]: User RKwok21 removed
+2023-10-27 02:17:38 [Login]: User member logged in
+2023-10-27 02:18:26 [Login]: User admin logged in
