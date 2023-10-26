@@ -124,7 +124,9 @@ public class FileUploader implements LogObserverable, AppState {
             int ch;
             while ((ch = br.read()) != -1) {
                 if (ch != '0' && ch != '1' && ch != '\r' && ch != '\n') {
+
                     // If character is not 0, 1, or a line break, it's not a binary file
+
                     return false;
                 }
             }
@@ -134,8 +136,6 @@ public class FileUploader implements LogObserverable, AppState {
             return false;
         }
     }
-
-
 
     /**
      * return the filename of the file being uploaded
