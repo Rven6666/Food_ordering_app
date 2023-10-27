@@ -62,8 +62,13 @@ public class AppStats {
         System.out.println("Total number of scrolls downloaded: " + stats.get("scrolls downloaded"));
         System.out.println("Would you like to see the number of downloads for each scroll? (y/n)");
         String input = Scan.scanString(new ArrayList<String>(Arrays.asList("y", "n")));
+        
         if(input.equals("y")) {
             JSONArray scrollsArray = ScrollSeeker.getScrollsArray();
+            if (scrollsArray.size() == 0) {
+                System.out.println("No scrolls have been uploaded yet, returning to Main Menu.");
+                return;
+            }
             for (Object obj : scrollsArray) {
                 JSONObject scroll = (JSONObject) obj;
                 String filename = (String) scroll.get("filename");

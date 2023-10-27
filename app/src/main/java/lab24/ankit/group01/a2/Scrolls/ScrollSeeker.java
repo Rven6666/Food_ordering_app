@@ -370,7 +370,7 @@ public class ScrollSeeker implements AppState {
     public void searchFilter(){
 
         // list of all the choices
-        String[] choices = {"Uploader ID", "Scroll ID", "Filename", "Upload Date", "Return to Main Menu"};
+        String[] choices = {"Uploader ID", "Scroll ID", "Filename", "Date", "Return to Main Menu"};
         
         // getting user choice
         System.out.println("\n Search Filters Menu: ");
