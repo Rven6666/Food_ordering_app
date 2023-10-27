@@ -282,9 +282,11 @@ public class ScrollSeeker implements AppState {
                 }
             }
         }
-
+        
         String source = "src/main/java/lab24/ankit/group01/a2/uploaded_scrolls/" + scroll_id + "/" + filename + "-" + version;
 
+        
+        
         System.out.print("Specify path to the directory to save the scroll: ");
         String dir_path = Scan.scanString(null);
 

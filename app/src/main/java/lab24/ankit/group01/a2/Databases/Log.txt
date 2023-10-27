@@ -254,3 +254,10 @@
 2023-10-27 08:15:15 [FileObserver]: File exampleScroll.txt uploaded successfully
 2023-10-27 13:48:26 [Login]: User admin logged in
 2023-10-27 14:20:15 [Login]: User member logged in
+2023-10-27 14:25:11 [Login]: User admin logged in
+2023-10-27 14:26:06 [FileObserver]: File to_save.txt uploaded successfully
+2023-10-27 14:27:01 [FileObserver]: File another_save.txt uploaded successfully
+2023-10-27 14:37:09 [Login]: User member logged in
+2023-10-27 14:41:31 [Login]: User member logged in
+2023-10-27 14:41:51 [FileObserver]: File to_save.txt uploaded successfully
+2023-10-27 14:42:55 [Login]: User admin logged in

@@ -67,10 +67,10 @@ public class ScrollManager{
         // write the binary representation to the file
         String filename = (String) scroll.get("filename");
         String nextVersion = getNextVersion(scroll);
-        filename += "-" + nextVersion;
+        String filenamePath = filename + "-" + nextVersion;
 
         // write new file to the folder
-        String path = UPLOADED_SCROLLS_PATH + scroll.get("scroll id") + "/" + filename;
+        String path = UPLOADED_SCROLLS_PATH + scroll.get("scroll id") + "/" + filenamePath;
         try {
             FileWriter fileObj = new FileWriter(path);
             fileObj.write(binary_content);
