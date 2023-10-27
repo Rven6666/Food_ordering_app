@@ -33,8 +33,7 @@ public class ScrollSeekerTest {
         parser = mock(JSONParser.class);
     }
 
-    // courtesy = https://stackoverflow.com/questions/63263662/mockito-3-4-0-static-mocking-exception
-    // you are a life saver bro!!! holy sh*#!!!!
+
     @BeforeAll
     public static void initStaticMock(){
         mockedStaticScrollSeeker = mockStatic(ScrollSeeker.class);
