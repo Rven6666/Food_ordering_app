@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f1da755-437e-4def-ac33-5f7917681bae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/ScrollSeekerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/TestFileUpload/FileUploaderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/TestFileUpload/UploadnonbinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/AppTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/LoginTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/LoginTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/MenuTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/lab24/ankit/group01/a2/MenuTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/AppStats.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/AppStats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/Log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/Log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lab24/ankit/group01/a2/Databases/Scrolls.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,26 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Lab24-Ankit-Group01-A2" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -43,20 +65,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/DaleHJ/Documents/UNI/SYDNEY_UNI/PRIMARY_RESOURCES/YEAR_2/YEAR2-SEM_2/SOFT2412 - Agile Software Development Practices/02_ASSIGNMENTS/Assignment 2/Lab24-Ankit-Group01-A2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/ethan/Desktop/SOFT2412_A2/Lab24-Ankit-Group01-A2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
-}</component>
-  <component name="RunManager" selected="Gradle.ScrollSeekerTest">
+}]]></component>
+  <component name="RunManager" selected="Gradle.UploadnonbinaryTest">
     <configuration name="rsa_encryption" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="rsa_encryption" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="FileUploaderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":app:test" />
+            <option value="--tests" />
+            <option value="&quot;lab24.ankit.group01.a2.FileUploaderTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
     </configuration>
     <configuration name="ScrollSeekerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -72,52 +117,6 @@
             <option value=":app:test" />
             <option value="--tests" />
             <option value="&quot;lab24.ankit.group01.a2.ScrollSeekerTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ScrollSeekerTest.displayAllScrollsEmptyArray" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":app:test" />
-            <option value="--tests" />
-            <option value="&quot;lab24.ankit.group01.a2.ScrollSeekerTest.displayAllScrollsEmptyArray&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ScrollSeekerTest.displayAllScrollsForMultipleScrolls" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":app:test" />
-            <option value="--tests" />
-            <option value="&quot;lab24.ankit.group01.a2.ScrollSeekerTest.displayAllScrollsForMultipleScrolls&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -173,13 +172,36 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="UploadnonbinaryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":app:test" />
+            <option value="--tests" />
+            <option value="&quot;lab24.ankit.group01.a2.TestFileUpload.UploadnonbinaryTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.UploadnonbinaryTest" />
+        <item itemvalue="Gradle.FileUploaderTest" />
         <item itemvalue="Gradle.ScrollSeekerTest" />
         <item itemvalue="Gradle.ScrollSeekerTest.testGetScroll_WhenScrollIDExists" />
         <item itemvalue="Gradle.ScrollSeekerTest.testScrollHistory_ValidScrollID" />
-        <item itemvalue="Gradle.ScrollSeekerTest.displayAllScrollsEmptyArray" />
-        <item itemvalue="Gradle.ScrollSeekerTest.displayAllScrollsForMultipleScrolls" />
       </list>
     </recent_temporary>
   </component>
@@ -204,5 +226,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Lab24_Ankit_Group01_A2$FileUploaderTest.ic" NAME="FileUploaderTest Coverage Results" MODIFIED="1698365709403" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Lab24_Ankit_Group01_A2$UploadnonbinaryTest.ic" NAME="UploadnonbinaryTest Coverage Results" MODIFIED="1698365885961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
