@@ -1,5 +1,6 @@
 package lab24.ankit.group01.a2.Miscellaneous;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
 
@@ -27,16 +28,21 @@ public class Scan {
     public static String scanString(List<String> options) {
         String response = "";
         while (true) {
-            response = scan.nextLine().strip();
-            if (options == null && response.length() > 0) {
-                break;
+            try {
+                response = scan.nextLine().strip();
+                if (options == null && response.length() > 0) {
+                    break;
+                } else if (options != null && options.contains(response)) {
+                    break;
+                } else {
+                    System.out.print("Invalid input. Please enter another value: ");
+                }
+            } catch (NoSuchElementException e) {
+                System.err.println("No input available.");
+                throw e;
             }
-            else if (options != null && options.contains(response))
-                break;
-            else
-                System.out.print("Invalid input. Please enter another value: ");
         }
         return response;
     }
-    
 }
+
