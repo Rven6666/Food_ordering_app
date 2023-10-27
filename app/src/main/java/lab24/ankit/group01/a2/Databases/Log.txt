@@ -253,3 +253,4 @@
 2023-10-27 02:18:26 [Login]: User admin logged in
 2023-10-27 08:15:15 [FileObserver]: File exampleScroll.txt uploaded successfully
 2023-10-27 13:48:26 [Login]: User admin logged in
+2023-10-27 14:20:15 [Login]: User member logged in
